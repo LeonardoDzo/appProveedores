@@ -70,6 +70,32 @@ namespace appProveedores.Models
         public string Email { get; set; }
 
         [Required]
+        [StringLength(20,ErrorMessage ="Excedio de los caracteres",MinimumLength =4)]
+        [DataType(DataType.Text)]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "Excedio de los caracteres", MinimumLength = 8)]
+        [DataType(DataType.Text)]
+        [Display(Name = "Apellidos")]
+        public string Apellidos { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Nombre de Empresa")]
+        public string Empresa { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Direccion")]
+        public string Direccion { get; set; }
+
+        [Required]
+        [Phone]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Numero de Telefono")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]

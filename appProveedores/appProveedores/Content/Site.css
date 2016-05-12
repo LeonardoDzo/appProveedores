@@ -1,6 +1,10 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #535b60;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +25,19 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+.service-wrapper {
+    background: #FFF;
+    margin: 20px 10px;
+    padding: 30px 20px;
+    -webkit-border-radius: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 0 3px #999;
+    -moz-box-shadow: 0 0 3px #999;
+    box-shadow: 0 0 3px #999;
+    color: 0 0 3px #999;
 }

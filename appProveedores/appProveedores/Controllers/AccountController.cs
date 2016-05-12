@@ -151,7 +151,9 @@ namespace appProveedores.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Empresa = model.Empresa,
+                                                direccion =model.Direccion, Nombre= model.Nombre, Apellidos = model.Apellidos,
+                                                PhoneNumber = model.PhoneNumber};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

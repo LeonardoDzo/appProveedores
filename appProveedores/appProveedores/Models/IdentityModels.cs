@@ -9,6 +9,10 @@ namespace appProveedores.Models
     // Puede agregar datos del perfil del usuario agregando más propiedades a la clase ApplicationUser. Para más información, visite http://go.microsoft.com/fwlink/?LinkID=317594.
     public class ApplicationUser : IdentityUser
     {
+        public string Nombre { get; set; }
+        public string Apellidos { get; set; }
+        public string Empresa { get; set; }
+        public string direccion { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Tenga en cuenta que el valor de authenticationType debe coincidir con el definido en CookieAuthenticationOptions.AuthenticationType
@@ -21,7 +25,7 @@ namespace appProveedores.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("ProveedoresConnection", throwIfV1Schema: false)
         {
         }
 

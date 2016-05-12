@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ac91fc27f9774d359b6328e7bb42eeb8" Name="Diagram1" DisplayType="true">
+        <EntityTypeShape EntityType="dbProveedoresModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.AspNetUsers" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Categorias" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Cotización" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Pago" Width="1.5" PointX="7.5" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Pedido" Width="1.75" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.ProductoPedido" Width="1.5" PointX="7.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Productos" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Tarjeta" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="dbProveedoresModel.FK_Pedido_User" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_Tarjeta_User" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_Productos_Categorias" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_Cotización_Pedido" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_Pago_Pedido" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_Pago_Tarjeta" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_ProductoPedido_Pedido" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.FK_ProductoPedido_Productos" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProveedoresModel.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<appProveedores.Models.Productos>
+
+@{
+    ViewBag.Title = "Lista";
+}
+
+<h2>Lista</h2>
+
+<div class="container">
+    <div id="Carrito" class="form-control-static">
+
+    </div>
+    <div class="row ">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="service-wrapper" style="text-align:center">
+                    <img src="http://www.thechipshoppe.com/img/Shoppingcart_128x128.png"/> <br />
+                    @Html.DisplayFor(modelItem => item.nombre) <br />
+
+                    @Html.DisplayFor(modelItem => item.precioUnidad)<br />
+
+                    @Html.DisplayFor(modelItem => item.Categorias.nombreCategoria)<br />
+
+                    @Html.ActionLink("Seleccion", "Seleccion", new { id = item.idProducto }, new { @class= "btn btn-primary" })
+               
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            _Carrito();
+        });
+        function _Carrito() {
+            $('#Carrito').empty();
+            $('#Carrito').load("/Productos/_Carrito");
+          
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Productos.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Productos.precioUnidad)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.cantidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Productos.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(model=> item.Productos.precioUnidad)
+        </td>
+        <td>
+            @using (Html.BeginForm("_Carrito", "Productos", "POST"))
+            {
+                <input type="hidden" value="@item.id" name="id" />
+                <input type="submit" value="Quitar Producto" class="btn-danger"/>
+            }
+        </td>
+    </tr>
+ 
+}
+    <tr>
+        <td>
+            <h2>Total</h2>
+        </td>
+        <td></td>
+        <td></td>
+        <td>
+            <h3>@ViewBag.Total</h3>
+        </td>
+    </tr>
+
+</table>
+@Html.ActionLink("Cotización", "Cotizacion")

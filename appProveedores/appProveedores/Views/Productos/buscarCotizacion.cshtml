@@ -1,0 +1,131 @@
+﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
+
+
+<div class="container service-wrapper">
+    <br />
+    <div class="col-lg-9">
+
+        Hermosillo<br />
+        30308927834<br />
+        Telefono: 2-57-57<br />
+    </div>
+    <div class="col-lg-3"><img src="~/fonts/proveedores.png" height="120" width="120" /></div>
+    <div id="Cliente" class="row left">
+
+    </div>
+
+    <div class="row">
+
+        <br />
+        <p>
+            Por medio de esta carta deseamos indicarle la cotizacion de los productos que nos
+            consultó. Le indicamos las caracteristicas principales de los productos y algunos de
+            talles especificos respecto a cada uno de ellos.<br />
+        </p>
+    </div>
+    <div class="row">
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Productos.nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cantidad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Productos.precioUnidad)
+                </th>
+                <th>
+                    Precio Final
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Productos.nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cantidad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
+                    </td>
+                    <td>
+                        <h5>@string.Format("{0:c}", item.Productos.precioUnidad * item.cantidad)</h5>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <h5>Sub-Total</h5>
+                </td>
+                <td>
+                    @ViewBag.SubTotal
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <h5>IVA</h5>
+                </td>
+                <td>
+                    @ViewBag.IVA
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <h5>TOTAL</h5>
+                </td>
+                <td>
+                    @ViewBag.TOTAL
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="row">
+        <p>
+            Esta cotización de nuestros productos es válida desde el dia @DateTime.Now.Date
+            hasta el @DateTime.Now.AddDays(20).Date . Cualquier duda comuniquese con nosotros, estaremos en contacto.
+        </p>
+        <br />
+        <br />
+        <p>
+            _______________________<br />
+            ARTURO VIESCAS MARTINEZ<br />
+            Representante de ventas<br />
+            30308927834<br />
+            arturo@proveemax.com<br />
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            _infoCliente();
+        });
+        function _infoCliente() {
+            $('#Cliente').empty();
+            $('#Cliente').load("/Productos/_InfoCliente");
+
+        }
+
+    </script>
+}
+
+
+
+
+
+

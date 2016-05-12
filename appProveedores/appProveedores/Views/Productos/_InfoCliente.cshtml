@@ -1,0 +1,34 @@
+﻿@model appProveedores.Models.AspNetUsers
+
+<div>
+    <dl class="dl">
+
+        <dd>
+           Hermosillo, Sonora - @DateTime.Now.Date
+        </dd>
+        <dd>
+           
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre) <label></label> @Html.DisplayFor(model => model.Apellidos)
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+
+        <dd>
+            @Html.DisplayFor(model => model.direccion)
+        </dd>
+        <dd>
+
+        </dd>
+
+
+    </dl>
+</div>
+
+Estimado Señor @Html.DisplayFor(model => model.Nombre) :
+

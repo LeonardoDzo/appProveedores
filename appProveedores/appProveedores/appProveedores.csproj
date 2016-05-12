@@ -80,6 +80,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -196,14 +198,71 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605100640398_InitialCreate.cs" />
+    <Compile Include="Migrations\201605100640398_InitialCreate.Designer.cs">
+      <DependentUpon>201605100640398_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605120358436_UpdateTable.cs" />
+    <Compile Include="Migrations\201605120358436_UpdateTable.Designer.cs">
+      <DependentUpon>201605120358436_UpdateTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605120401521_UpdateTable1.cs" />
+    <Compile Include="Migrations\201605120401521_UpdateTable1.Designer.cs">
+      <DependentUpon>201605120401521_UpdateTable1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AspNetRoles.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUsers.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Categorias.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cotización.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ModelProveedores.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelProveedores.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelProveedores.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelProveedores.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelProveedores.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pago.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pedido.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductoPedido.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Productos.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tarjeta.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -212,14 +271,32 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\proveedores.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\ModelProveedores.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelProveedores.edmx</DependentUpon>
+      <LastGenOutput>ModelProveedores.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelProveedores.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelProveedores.edmx</DependentUpon>
+      <LastGenOutput>ModelProveedores.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EntityDeploy Include="Models\ModelProveedores.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelProveedores.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelProveedores.edmx.diagram">
+      <DependentUpon>ModelProveedores.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -267,6 +344,23 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Categorias\Create.cshtml" />
+    <Content Include="Views\Categorias\Delete.cshtml" />
+    <Content Include="Views\Categorias\Details.cshtml" />
+    <Content Include="Views\Categorias\Edit.cshtml" />
+    <Content Include="Views\Categorias\Index.cshtml" />
+    <Content Include="Views\Productos\Create.cshtml" />
+    <Content Include="Views\Productos\Delete.cshtml" />
+    <Content Include="Views\Productos\Details.cshtml" />
+    <Content Include="Views\Productos\Edit.cshtml" />
+    <Content Include="Views\Productos\Index.cshtml" />
+    <Content Include="Views\Productos\_SeleccionConfirmed.cshtml" />
+    <Content Include="Views\Productos\Lista.cshtml" />
+    <Content Include="Views\Productos\Seleccion.cshtml" />
+    <Content Include="Views\Productos\_Carrito.cshtml" />
+    <Content Include="Views\Productos\Cotizacion.cshtml" />
+    <Content Include="Views\Productos\_InfoCliente.cshtml" />
+    <Content Include="Views\Productos\buscarCotizacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -278,6 +372,20 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605100640398_InitialCreate.resx">
+      <DependentUpon>201605100640398_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605120358436_UpdateTable.resx">
+      <DependentUpon>201605120358436_UpdateTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605120401521_UpdateTable1.resx">
+      <DependentUpon>201605120401521_UpdateTable1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

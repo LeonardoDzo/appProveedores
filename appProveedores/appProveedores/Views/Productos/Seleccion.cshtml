@@ -1,0 +1,63 @@
+﻿@model appProveedores.Models.Productos
+
+@{
+    ViewBag.Title = "Seleccion";
+}
+
+<h2>Seleccion</h2>
+
+<div>
+    <h4>Productos</h4>
+    <hr />
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cantxUnidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantxUnidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.precioUnidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precioUnidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.unidadExistencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unidadExistencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Categorias.nombreCategoria)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Categorias.nombreCategoria)
+        </dd>
+
+    </dl>
+</div>
+<p>
+   @using (Html.BeginForm("Seleccion", "Productos", "POST"))
+   {
+    <input type="number" id="cantidad" name="cantidad" class="form-control" />
+    <input type="submit" value="Agregar al carrito" class="form-control" />
+    <a href="/Productos/Lista" class="form-control">Devolverte</a>                                                                                 
+   }
+</p>

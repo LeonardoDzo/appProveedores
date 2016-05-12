@@ -8,6 +8,7 @@ namespace appProveedores.Controllers
 {
     public class HomeController : Controller
     {
+     
         public ActionResult Index()
         {
             return View();
@@ -20,6 +21,7 @@ namespace appProveedores.Controllers
             return View();
         }
 
+    
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
