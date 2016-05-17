@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="dbProveedoresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="dbProveedoresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -54,15 +54,24 @@
             <PropertyRef Name="idCotización" />
           </Key>
           <Property Name="idCotización" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="idPedido" Type="int" Nullable="false" />
+          <Property Name="idCliente" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="fechaCotización" Type="date" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="idFactura" />
+          </Key>
+          <Property Name="idFactura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPago" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="razonSocial" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RFC" Type="nchar" MaxLength="13" Nullable="false" />
+          <Property Name="fechaFacturacion" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="Pago">
           <Key>
             <PropertyRef Name="idPago" />
           </Key>
-          <Property Name="idPago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="idTarjeta" Type="int" Nullable="false" />
+          <Property Name="idPago" Type="uniqueidentifier" Nullable="false" />
           <Property Name="idPedido" Type="int" Nullable="false" />
           <Property Name="montoPago" Type="real" Nullable="false" />
           <Property Name="fechaPago" Type="datetime" Nullable="false" />
@@ -77,8 +86,17 @@
           <Property Name="fechaEntrega" Type="datetime" Nullable="false" />
           <Property Name="fechaEnvio" Type="datetime" Nullable="false" />
           <Property Name="direccion" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
           <Property Name="codigoSeguridad" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="estado" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductoCotizacion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idProducto" Type="int" Nullable="false" />
+          <Property Name="idCotizacion" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductoPedido">
           <Key>
@@ -101,23 +119,15 @@
           <Property Name="precioUnidad" Type="real" Nullable="false" />
           <Property Name="unidadExistencia" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Tarjeta">
-          <Key>
-            <PropertyRef Name="idTarjeta" />
-          </Key>
-          <Property Name="idTarjeta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="idCliente" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="numeroTarjeta" Type="smallint" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Cotización_Pedido">
-          <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
+        <Association Name="FK_Cotización_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Cotización" Type="Self.Cotización" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Pedido">
-              <PropertyRef Name="idPedido" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Cotización">
-              <PropertyRef Name="idPedido" />
+              <PropertyRef Name="idCliente" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -149,6 +159,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Facturas_Pago">
+          <End Role="Pago" Type="Self.Pago" Multiplicity="1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pago">
+              <PropertyRef Name="idPago" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="idPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Pago_Pedido">
           <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
           <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
@@ -158,18 +180,6 @@
             </Principal>
             <Dependent Role="Pago">
               <PropertyRef Name="idPedido" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Pago_Tarjeta">
-          <End Role="Tarjeta" Type="Self.Tarjeta" Multiplicity="1" />
-          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tarjeta">
-              <PropertyRef Name="idTarjeta" />
-            </Principal>
-            <Dependent Role="Pago">
-              <PropertyRef Name="idTarjeta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -184,6 +194,30 @@
             </Principal>
             <Dependent Role="Pedido">
               <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductoCotizacion_Cotización">
+          <End Role="Cotización" Type="Self.Cotización" Multiplicity="1" />
+          <End Role="ProductoCotizacion" Type="Self.ProductoCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cotización">
+              <PropertyRef Name="idCotización" />
+            </Principal>
+            <Dependent Role="ProductoCotizacion">
+              <PropertyRef Name="idCotizacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductoCotizacion_Productos">
+          <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
+          <End Role="ProductoCotizacion" Type="Self.ProductoCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productos">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="ProductoCotizacion">
+              <PropertyRef Name="idProducto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -223,33 +257,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Tarjeta_User">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Tarjeta" Type="Self.Tarjeta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Tarjeta">
-              <PropertyRef Name="idCliente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="dbProveedoresModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cotización" EntityType="Self.Cotización" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facturas" EntityType="Self.Facturas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pedido" EntityType="Self.Pedido" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductoCotizacion" EntityType="Self.ProductoCotizacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductoPedido" EntityType="Self.ProductoPedido" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Productos" EntityType="Self.Productos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tarjeta" EntityType="Self.Tarjeta" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Cotización_Pedido" Association="Self.FK_Cotización_Pedido">
-            <End Role="Pedido" EntitySet="Pedido" />
+          <AssociationSet Name="FK_Cotización_AspNetUsers" Association="Self.FK_Cotización_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Cotización" EntitySet="Cotización" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
@@ -260,17 +281,25 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Pago" Association="Self.FK_Facturas_Pago">
+            <End Role="Pago" EntitySet="Pago" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
           <AssociationSet Name="FK_Pago_Pedido" Association="Self.FK_Pago_Pedido">
             <End Role="Pedido" EntitySet="Pedido" />
-            <End Role="Pago" EntitySet="Pago" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Pago_Tarjeta" Association="Self.FK_Pago_Tarjeta">
-            <End Role="Tarjeta" EntitySet="Tarjeta" />
             <End Role="Pago" EntitySet="Pago" />
           </AssociationSet>
           <AssociationSet Name="FK_Pedido_User" Association="Self.FK_Pedido_User">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Pedido" EntitySet="Pedido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductoCotizacion_Cotización" Association="Self.FK_ProductoCotizacion_Cotización">
+            <End Role="Cotización" EntitySet="Cotización" />
+            <End Role="ProductoCotizacion" EntitySet="ProductoCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductoCotizacion_Productos" Association="Self.FK_ProductoCotizacion_Productos">
+            <End Role="Productos" EntitySet="Productos" />
+            <End Role="ProductoCotizacion" EntitySet="ProductoCotizacion" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductoPedido_Pedido" Association="Self.FK_ProductoPedido_Pedido">
             <End Role="Pedido" EntitySet="Pedido" />
@@ -284,12 +313,9 @@
             <End Role="Categorias" EntitySet="Categorias" />
             <End Role="Productos" EntitySet="Productos" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tarjeta_User" Association="Self.FK_Tarjeta_User">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Tarjeta" EntitySet="Tarjeta" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbProveedoresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -317,13 +343,13 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Pedido" Relationship="Self.FK_Pedido_User" FromRole="AspNetUsers" ToRole="Pedido" />
-          <NavigationProperty Name="Tarjeta" Relationship="Self.FK_Tarjeta_User" FromRole="AspNetUsers" ToRole="Tarjeta" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
           <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Apellidos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Empresa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="direccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cotización" Relationship="Self.FK_Cotización_AspNetUsers" FromRole="AspNetUsers" ToRole="Cotización" />
+          <NavigationProperty Name="Pedido" Relationship="Self.FK_Pedido_User" FromRole="AspNetUsers" ToRole="Pedido" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Categorias">
           <Key>
@@ -339,21 +365,32 @@
             <PropertyRef Name="idCotización" />
           </Key>
           <Property Name="idCotización" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idPedido" Type="Int32" Nullable="false" />
+          <Property Name="idCliente" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="fechaCotización" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Pedido" Relationship="Self.FK_Cotización_Pedido" FromRole="Cotización" ToRole="Pedido" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Cotización_AspNetUsers" FromRole="Cotización" ToRole="AspNetUsers" />
+          <NavigationProperty Name="ProductoCotizacion" Relationship="Self.FK_ProductoCotizacion_Cotización" FromRole="Cotización" ToRole="ProductoCotizacion" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="idFactura" />
+          </Key>
+          <Property Name="idFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPago" Type="Guid" Nullable="false" />
+          <Property Name="razonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RFC" Type="String" MaxLength="13" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="fechaFacturacion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Pago" Relationship="Self.FK_Facturas_Pago" FromRole="Facturas" ToRole="Pago" />
         </EntityType>
         <EntityType Name="Pago">
           <Key>
             <PropertyRef Name="idPago" />
           </Key>
-          <Property Name="idPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="idPago" Type="Guid" Nullable="false" />
           <Property Name="idPedido" Type="Int32" Nullable="false" />
           <Property Name="montoPago" Type="Single" Nullable="false" />
           <Property Name="fechaPago" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Facturas" Relationship="Self.FK_Facturas_Pago" FromRole="Pago" ToRole="Facturas" />
           <NavigationProperty Name="Pedido" Relationship="Self.FK_Pago_Pedido" FromRole="Pago" ToRole="Pedido" />
-          <NavigationProperty Name="Tarjeta" Relationship="Self.FK_Pago_Tarjeta" FromRole="Pago" ToRole="Tarjeta" />
         </EntityType>
         <EntityType Name="Pedido">
           <Key>
@@ -365,12 +402,22 @@
           <Property Name="fechaEntrega" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="fechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="direccion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
           <Property Name="codigoSeguridad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Pedido_User" FromRole="Pedido" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Cotización" Relationship="Self.FK_Cotización_Pedido" FromRole="Pedido" ToRole="Cotización" />
           <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_Pedido" FromRole="Pedido" ToRole="Pago" />
           <NavigationProperty Name="ProductoPedido" Relationship="Self.FK_ProductoPedido_Pedido" FromRole="Pedido" ToRole="ProductoPedido" />
-          <Property Name="estado" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductoCotizacion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idProducto" Type="Int32" Nullable="false" />
+          <Property Name="idCotizacion" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cotización" Relationship="Self.FK_ProductoCotizacion_Cotización" FromRole="ProductoCotizacion" ToRole="Cotización" />
+          <NavigationProperty Name="Productos" Relationship="Self.FK_ProductoCotizacion_Productos" FromRole="ProductoCotizacion" ToRole="Productos" />
         </EntityType>
         <EntityType Name="ProductoPedido">
           <Key>
@@ -395,18 +442,21 @@
           <Property Name="precioUnidad" Type="Single" Nullable="false" />
           <Property Name="unidadExistencia" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Categorias" Relationship="Self.FK_Productos_Categorias" FromRole="Productos" ToRole="Categorias" />
+          <NavigationProperty Name="ProductoCotizacion" Relationship="Self.FK_ProductoCotizacion_Productos" FromRole="Productos" ToRole="ProductoCotizacion" />
           <NavigationProperty Name="ProductoPedido" Relationship="Self.FK_ProductoPedido_Productos" FromRole="Productos" ToRole="ProductoPedido" />
         </EntityType>
-        <EntityType Name="Tarjeta">
-          <Key>
-            <PropertyRef Name="idTarjeta" />
-          </Key>
-          <Property Name="idTarjeta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idCliente" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="numeroTarjeta" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Tarjeta_User" FromRole="Tarjeta" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_Tarjeta" FromRole="Tarjeta" ToRole="Pago" />
-        </EntityType>
+        <Association Name="FK_Cotización_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Cotización" Type="Self.Cotización" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cotización">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Pedido_User">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -417,20 +467,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Pedido">
-              <PropertyRef Name="idCliente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tarjeta_User">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Tarjeta" Type="Self.Tarjeta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Tarjeta">
               <PropertyRef Name="idCliente" />
             </Dependent>
           </ReferentialConstraint>
@@ -447,15 +483,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Cotización_Pedido">
-          <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
-          <End Role="Cotización" Type="Self.Cotización" Multiplicity="*" />
+        <Association Name="FK_ProductoCotizacion_Cotización">
+          <End Role="Cotización" Type="Self.Cotización" Multiplicity="1" />
+          <End Role="ProductoCotizacion" Type="Self.ProductoCotizacion" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Pedido">
-              <PropertyRef Name="idPedido" />
+            <Principal Role="Cotización">
+              <PropertyRef Name="idCotización" />
             </Principal>
-            <Dependent Role="Cotización">
-              <PropertyRef Name="idPedido" />
+            <Dependent Role="ProductoCotizacion">
+              <PropertyRef Name="idCotizacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Pago">
+          <End Role="Pago" Type="Self.Pago" Multiplicity="1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pago">
+              <PropertyRef Name="idPago" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="idPago" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -471,18 +519,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Pago_Tarjeta">
-          <End Role="Tarjeta" Type="Self.Tarjeta" Multiplicity="1" />
-          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tarjeta">
-              <PropertyRef Name="idTarjeta" />
-            </Principal>
-            <Dependent Role="Pago">
-              <PropertyRef Name="idTarjeta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProductoPedido_Pedido">
           <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
           <End Role="ProductoPedido" Type="Self.ProductoPedido" Multiplicity="*" />
@@ -492,6 +528,18 @@
             </Principal>
             <Dependent Role="ProductoPedido">
               <PropertyRef Name="idPedido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductoCotizacion_Productos">
+          <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
+          <End Role="ProductoCotizacion" Type="Self.ProductoCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productos">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="ProductoCotizacion">
+              <PropertyRef Name="idProducto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -516,38 +564,43 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
           <EntitySet Name="Categorias" EntityType="Self.Categorias" />
           <EntitySet Name="Cotización" EntityType="Self.Cotización" />
+          <EntitySet Name="Facturas" EntityType="Self.Facturas" />
           <EntitySet Name="Pago" EntityType="Self.Pago" />
           <EntitySet Name="Pedido" EntityType="Self.Pedido" />
+          <EntitySet Name="ProductoCotizacion" EntityType="Self.ProductoCotizacion" />
           <EntitySet Name="ProductoPedido" EntityType="Self.ProductoPedido" />
           <EntitySet Name="Productos" EntityType="Self.Productos" />
-          <EntitySet Name="Tarjeta" EntityType="Self.Tarjeta" />
+          <AssociationSet Name="FK_Cotización_AspNetUsers" Association="Self.FK_Cotización_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Cotización" EntitySet="Cotización" />
+          </AssociationSet>
           <AssociationSet Name="FK_Pedido_User" Association="Self.FK_Pedido_User">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Pedido" EntitySet="Pedido" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tarjeta_User" Association="Self.FK_Tarjeta_User">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Tarjeta" EntitySet="Tarjeta" />
           </AssociationSet>
           <AssociationSet Name="FK_Productos_Categorias" Association="Self.FK_Productos_Categorias">
             <End Role="Categorias" EntitySet="Categorias" />
             <End Role="Productos" EntitySet="Productos" />
           </AssociationSet>
-          <AssociationSet Name="FK_Cotización_Pedido" Association="Self.FK_Cotización_Pedido">
-            <End Role="Pedido" EntitySet="Pedido" />
+          <AssociationSet Name="FK_ProductoCotizacion_Cotización" Association="Self.FK_ProductoCotizacion_Cotización">
             <End Role="Cotización" EntitySet="Cotización" />
+            <End Role="ProductoCotizacion" EntitySet="ProductoCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Pago" Association="Self.FK_Facturas_Pago">
+            <End Role="Pago" EntitySet="Pago" />
+            <End Role="Facturas" EntitySet="Facturas" />
           </AssociationSet>
           <AssociationSet Name="FK_Pago_Pedido" Association="Self.FK_Pago_Pedido">
             <End Role="Pedido" EntitySet="Pedido" />
             <End Role="Pago" EntitySet="Pago" />
           </AssociationSet>
-          <AssociationSet Name="FK_Pago_Tarjeta" Association="Self.FK_Pago_Tarjeta">
-            <End Role="Tarjeta" EntitySet="Tarjeta" />
-            <End Role="Pago" EntitySet="Pago" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProductoPedido_Pedido" Association="Self.FK_ProductoPedido_Pedido">
             <End Role="Pedido" EntitySet="Pedido" />
             <End Role="ProductoPedido" EntitySet="ProductoPedido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductoCotizacion_Productos" Association="Self.FK_ProductoCotizacion_Productos">
+            <End Role="Productos" EntitySet="Productos" />
+            <End Role="ProductoCotizacion" EntitySet="ProductoCotizacion" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductoPedido_Productos" Association="Self.FK_ProductoPedido_Productos">
             <End Role="Productos" EntitySet="Productos" />
@@ -575,10 +628,6 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="dbProveedoresModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="direccion" ColumnName="direccion" />
-                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
-                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -591,6 +640,10 @@
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -607,8 +660,19 @@
             <EntityTypeMapping TypeName="dbProveedoresModel.Cotización">
               <MappingFragment StoreEntitySet="Cotización">
                 <ScalarProperty Name="idCotización" ColumnName="idCotización" />
-                <ScalarProperty Name="idPedido" ColumnName="idPedido" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
                 <ScalarProperty Name="fechaCotización" ColumnName="fechaCotización" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facturas">
+            <EntityTypeMapping TypeName="dbProveedoresModel.Facturas">
+              <MappingFragment StoreEntitySet="Facturas">
+                <ScalarProperty Name="idFactura" ColumnName="idFactura" />
+                <ScalarProperty Name="idPago" ColumnName="idPago" />
+                <ScalarProperty Name="razonSocial" ColumnName="razonSocial" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
+                <ScalarProperty Name="fechaFacturacion" ColumnName="fechaFacturacion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -616,7 +680,6 @@
             <EntityTypeMapping TypeName="dbProveedoresModel.Pago">
               <MappingFragment StoreEntitySet="Pago">
                 <ScalarProperty Name="idPago" ColumnName="idPago" />
-                <ScalarProperty Name="idTarjeta" ColumnName="idTarjeta" />
                 <ScalarProperty Name="idPedido" ColumnName="idPedido" />
                 <ScalarProperty Name="montoPago" ColumnName="montoPago" />
                 <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
@@ -626,14 +689,24 @@
           <EntitySetMapping Name="Pedido">
             <EntityTypeMapping TypeName="dbProveedoresModel.Pedido">
               <MappingFragment StoreEntitySet="Pedido">
-                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="idPedido" ColumnName="idPedido" />
                 <ScalarProperty Name="idCliente" ColumnName="idCliente" />
                 <ScalarProperty Name="fechaPedido" ColumnName="fechaPedido" />
                 <ScalarProperty Name="fechaEntrega" ColumnName="fechaEntrega" />
                 <ScalarProperty Name="fechaEnvio" ColumnName="fechaEnvio" />
                 <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="codigoSeguridad" ColumnName="codigoSeguridad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductoCotizacion">
+            <EntityTypeMapping TypeName="dbProveedoresModel.ProductoCotizacion">
+              <MappingFragment StoreEntitySet="ProductoCotizacion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+                <ScalarProperty Name="idCotizacion" ColumnName="idCotizacion" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -657,15 +730,6 @@
                 <ScalarProperty Name="cantxUnidad" ColumnName="cantxUnidad" />
                 <ScalarProperty Name="precioUnidad" ColumnName="precioUnidad" />
                 <ScalarProperty Name="unidadExistencia" ColumnName="unidadExistencia" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tarjeta">
-            <EntityTypeMapping TypeName="dbProveedoresModel.Tarjeta">
-              <MappingFragment StoreEntitySet="Tarjeta">
-                <ScalarProperty Name="idTarjeta" ColumnName="idTarjeta" />
-                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
-                <ScalarProperty Name="numeroTarjeta" ColumnName="numeroTarjeta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

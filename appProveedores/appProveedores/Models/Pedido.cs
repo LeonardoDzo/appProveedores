@@ -17,7 +17,6 @@ namespace appProveedores.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Pedido()
         {
-            this.Cotización = new HashSet<Cotización>();
             this.Pago = new HashSet<Pago>();
             this.ProductoPedido = new HashSet<ProductoPedido>();
         }
@@ -28,12 +27,10 @@ namespace appProveedores.Models
         public System.DateTime fechaEntrega { get; set; }
         public System.DateTime fechaEnvio { get; set; }
         public string direccion { get; set; }
+        public int estado { get; set; }
         public string codigoSeguridad { get; set; }
-        public short estado { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cotización> Cotización { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

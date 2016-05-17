@@ -14,13 +14,19 @@ namespace appProveedores.Models
     
     public partial class Pago
     {
-        public int idPago { get; set; }
-        public int idTarjeta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Pago()
+        {
+            this.Facturas = new HashSet<Facturas>();
+        }
+    
+        public System.Guid idPago { get; set; }
         public int idPedido { get; set; }
         public float montoPago { get; set; }
         public System.DateTime fechaPago { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Facturas> Facturas { get; set; }
         public virtual Pedido Pedido { get; set; }
-        public virtual Tarjeta Tarjeta { get; set; }
     }
 }

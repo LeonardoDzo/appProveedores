@@ -231,6 +231,9 @@
     <Compile Include="Models\Cotización.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Facturas.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ModelProveedores.Context.cs">
@@ -254,13 +257,13 @@
     <Compile Include="Models\Pedido.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductoCotizacion.cs">
+      <DependentUpon>ModelProveedores.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ProductoPedido.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Productos.cs">
-      <DependentUpon>ModelProveedores.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Tarjeta.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

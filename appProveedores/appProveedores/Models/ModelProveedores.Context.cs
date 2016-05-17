@@ -29,10 +29,11 @@ namespace appProveedores.Models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Categorias> Categorias { get; set; }
         public virtual DbSet<Cotización> Cotización { get; set; }
+        public virtual DbSet<Facturas> Facturas { get; set; }
         public virtual DbSet<Pago> Pago { get; set; }
         public virtual DbSet<Pedido> Pedido { get; set; }
+        public virtual DbSet<ProductoCotizacion> ProductoCotizacion { get; set; }
         public virtual DbSet<ProductoPedido> ProductoPedido { get; set; }
         public virtual DbSet<Productos> Productos { get; set; }
-        public virtual DbSet<Tarjeta> Tarjeta { get; set; }
     }
 }

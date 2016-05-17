@@ -111,18 +111,18 @@ namespace appProveedores.Controllers
             return View(productosPedidos);
         }
 
-        public ActionResult buscarCotizacion(int id)
-        {
+        //public ActionResult buscarCotizacion(int id)
+        //{
 
-            var idCte = db.Cotización.Find(id).Pedido.idCliente;
-            var _idPedido = db.Cotización.Find(id).idPedido;
-            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido);
-            ViewBag.SubTotal = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
-            ViewBag.IVA = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
-            ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
+        //    var idCte = db.Cotización.Find(id).Pedido.idCliente;
+        //    var _idPedido = db.Cotización.Find(id).idPedido;
+        //    var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido);
+        //    ViewBag.SubTotal = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
+        //    ViewBag.IVA = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
+        //    ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
     
-            return View(productosPedidos);
-        }
+        //    return View(productosPedidos);
+        //}
         public ActionResult _InfoCliente()
         {
             var cliente = db.AspNetUsers.Where(x => x.UserName == User.Identity.Name).First();

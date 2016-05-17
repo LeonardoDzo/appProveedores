@@ -14,10 +14,18 @@ namespace appProveedores.Models
     
     public partial class Cotización
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Cotización()
+        {
+            this.ProductoCotizacion = new HashSet<ProductoCotizacion>();
+        }
+    
         public int idCotización { get; set; }
-        public int idPedido { get; set; }
+        public string idCliente { get; set; }
         public Nullable<System.DateTime> fechaCotización { get; set; }
     
-        public virtual Pedido Pedido { get; set; }
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProductoCotizacion> ProductoCotizacion { get; set; }
     }
 }

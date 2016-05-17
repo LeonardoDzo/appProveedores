@@ -17,8 +17,8 @@ namespace appProveedores.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AspNetUsers()
         {
+            this.Cotización = new HashSet<Cotización>();
             this.Pedido = new HashSet<Pedido>();
-            this.Tarjeta = new HashSet<Tarjeta>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
         }
     
@@ -40,9 +40,9 @@ namespace appProveedores.Models
         public string direccion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pedido> Pedido { get; set; }
+        public virtual ICollection<Cotización> Cotización { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tarjeta> Tarjeta { get; set; }
+        public virtual ICollection<Pedido> Pedido { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
     }
