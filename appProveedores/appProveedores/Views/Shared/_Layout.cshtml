@@ -29,7 +29,7 @@
                         <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                         <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
                     </ul>
-                    @Html.Partial("_LoginPartial")
+                   
                 }
                 else if (User.IsInRole("Cliente"))
                 {
@@ -44,7 +44,7 @@
                         <li>@Html.ActionLink("Categorias", "Index", "Categorias")</li>
                     </ul>
                 }
-
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
