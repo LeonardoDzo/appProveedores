@@ -95,34 +95,51 @@ namespace appProveedores.Controllers
         public ActionResult Cotizacion()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
-            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estado == 1 select u.idPedido).FirstOrDefault();
-            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido);
-            ViewBag.SubTotal = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) ;
-            ViewBag.IVA = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
-            ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad)*1.16;
-
             var cotizacion = new Cotización()
             {
-                idPedido = _idPedido,
+                idCliente = idCte,
                 fechaCotización = DateTime.Now
             };
             db.Cotización.Add(cotizacion);
             db.SaveChanges();
-            return View(productosPedidos);
+
+            var _idCotizacion = (from u in db.Cotización where u.idCliente == idCte select u.idCotización).FirstOrDefault();
+
+            
+            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estado == 1 select u.idPedido).FirstOrDefault();
+            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
+            foreach (var item in productosPedidos)
+            {
+                ProductoCotizacion producto = new ProductoCotizacion()
+                {                  
+                    idCotizacion = _idCotizacion,
+                    idProducto = item.idProducto,
+                    cantidad = item.cantidad
+                };
+                db.ProductoCotizacion.Add(producto);
+                db.SaveChanges();
+            }
+            var productosCotizacion = db.ProductoCotizacion.Where(x => x.idCotizacion == _idCotizacion);
+            ViewBag.SubTotal = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) ;
+            ViewBag.IVA = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
+            ViewBag.Total = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad)*1.16;
+
+            
+            return View(productosCotizacion);
         }
 
-        //public ActionResult buscarCotizacion(int id)
-        //{
+        public ActionResult buscarCotizacion(int id)
+        {
 
-        //    var idCte = db.Cotización.Find(id).Pedido.idCliente;
-        //    var _idPedido = db.Cotización.Find(id).idPedido;
-        //    var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido);
-        //    ViewBag.SubTotal = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
-        //    ViewBag.IVA = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
-        //    ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
-    
-        //    return View(productosPedidos);
-        //}
+            var idCte = db.Cotización.Find(id).idCliente;
+            var _idPedido = db.Cotización.Find(id).idCotización;
+            var productosCotizacion = db.ProductoCotizacion.Where(x => x.idCotizacion == _idPedido);
+            ViewBag.SubTotal = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad);
+            ViewBag.IVA = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
+            ViewBag.Total = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
+
+            return View(productosCotizacion);
+        }
         public ActionResult _InfoCliente()
         {
             var cliente = db.AspNetUsers.Where(x => x.UserName == User.Identity.Name).First();
