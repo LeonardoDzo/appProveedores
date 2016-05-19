@@ -10,6 +10,7 @@ using appProveedores.Models;
 
 namespace appProveedores.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class CategoriasController : Controller
     {
         private dbProveedoresEntities db = new dbProveedoresEntities();

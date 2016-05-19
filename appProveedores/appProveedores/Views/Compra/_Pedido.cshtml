@@ -1,0 +1,28 @@
+﻿@model appProveedores.Models.Pedido
+
+<div class="section clearfix" id="datosEntrega">
+    <p class="titleSection orange">Resumen del pedido</p>
+    <div class="clearfix">
+        <div id="nameIt" class="nameSection blue f">
+            <p class="blue f sub">Entrega: <span id="hdrAddressListText">@Html.DisplayFor(model => model.idPedido)</span></p>
+            <br>
+            <p class="blue f main">
+                <span id="lblUserName2">@ViewBag.Nombre @ViewBag.Apellidos</span>
+            </p>
+        </div>
+    </div>
+    <div id="adress" class="addressDescription">
+        <span id="lblCalle3" class="street">@Html.DisplayFor(model=> model.direccion)</span><br>
+        <span id="lblCode3" class="cp-delegacion">@Html.DisplayFor(model=> model.codigoSeguridad)</span><br>
+        <span id="lblstate3">@Html.DisplayFor(model => model.estado)</span>
+    </div>
+    <div id="contact" class="addressDescription">
+        <div class="clearfix">
+            <div class="checkout-check-car2 blue f"></div>
+            <div class="lgray nota f">
+                <span id="lblTipoEntrega3">Envío Normal(7 a 10 días hábiles)</span>
+            </div>
+        </div>
+    </div>
+</div>
+

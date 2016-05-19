@@ -1,0 +1,41 @@
+﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
+
+@{
+    ViewBag.Title = "Revisa";
+}
+
+<h2>Revisa</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pedido.idCliente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Productos.nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.cantidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Productos.nombre)
+        </td>
+        <td>
+            @using (Html.BeginForm("_Carrito", "Productos", "POST"))
+            {
+                <input type="hidden" value="@item.id" name="id" />
+                <input type="submit" value="Quitar Producto" class="btn-danger" />
+            }
+        </td>
+    </tr>
+}
+</table>
+<a class="btn btn-success" href="/Compra/Checkout">Continuar</a>

@@ -1,0 +1,22 @@
+﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
+
+<p>
+    <h3>Información del pedido</h3>
+</p>
+
+@foreach (var item in Model)
+{
+        <div class="cellProduct">
+            <p class="border full f">
+                <span class="detail blue bolder f">@Html.DisplayFor(modelItem => item.Productos.nombre)</span>
+                <span class="detail lgray r">@Html.DisplayFor(modelItem => item.Productos.precioUnidad)</span>
+            </p>
+            <br />
+            <p>
+                <span class="detail lgray f bolder">Cantidad: @Html.DisplayFor(modelItem => item.cantidad)</span><br />
+                <span class="detail dgray r bolder">@( item.cantidad * item.Productos.precioUnidad)</span><br />
+            </p>
+        </div>
+
+}
+

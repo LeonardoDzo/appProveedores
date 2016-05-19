@@ -9,31 +9,31 @@ using System.Web.Mvc;
 using appProveedores.Models;
 
 namespace appProveedores.Controllers
-{
+{ 
     public class ProductosController : Controller
     {
         private dbProveedoresEntities db = new dbProveedoresEntities();
-
+        [Authorize(Roles ="Administrador")]
         // GET: Productos
         public ActionResult Index()
         {
             var productos = db.Productos.Include(p => p.Categorias);
             return View(productos.ToList());
         }
-
+        [Authorize(Roles = "Cliente")]
         public ActionResult Lista()
         {
             var productos = db.Productos.Where(x => x.unidadExistencia == true).
                 Include(p => p.Categorias).OrderBy(c => c.idCategoria);
             return View(productos);
         }
-
+        [Authorize(Roles = "Cliente")]
         [HttpGet]
         public ActionResult Seleccion(int id)
         {
             return View(db.Productos.Find(id));
         }
-
+        [Authorize(Roles = "Cliente")]
         [HttpPost, ActionName("Seleccion")]
         public ActionResult SeleccionConfirmada(int id, int cantidad)
         {
@@ -74,7 +74,7 @@ namespace appProveedores.Controllers
 
             return RedirectToAction("Lista", "Productos");
         }
-
+        [Authorize(Roles = "Cliente")]
         public ActionResult _Carrito()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
@@ -83,6 +83,7 @@ namespace appProveedores.Controllers
             ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
             return PartialView(productosPedidos);
         }
+        [Authorize(Roles = "Cliente")]
         [HttpPost, ActionName("_Carrito")]
         public ActionResult Quitar(int? id)
         {
@@ -91,7 +92,7 @@ namespace appProveedores.Controllers
             db.SaveChanges();
             return RedirectToAction("Lista", "Productos");
         }
-
+        [Authorize(Roles = "Cliente")]
         public ActionResult Cotizacion()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
@@ -103,14 +104,13 @@ namespace appProveedores.Controllers
 
             var cotizacion = new Cotización()
             {
-                idPedido = _idPedido,
+                //idPedido = _idPedido,
                 fechaCotización = DateTime.Now
             };
             db.Cotización.Add(cotizacion);
             db.SaveChanges();
             return View(productosPedidos);
         }
-
         //public ActionResult buscarCotizacion(int id)
         //{
 
@@ -120,14 +120,16 @@ namespace appProveedores.Controllers
         //    ViewBag.SubTotal = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
         //    ViewBag.IVA = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
         //    ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
-    
+
         //    return View(productosPedidos);
         //}
+        [Authorize(Roles = "Cliente")]
         public ActionResult _InfoCliente()
         {
             var cliente = db.AspNetUsers.Where(x => x.UserName == User.Identity.Name).First();
             return PartialView(cliente);
         }
+        [Authorize(Roles = "Administrador")]
         // GET: Productos/Details/5
         public ActionResult Details(int? id)
         {
@@ -142,14 +144,14 @@ namespace appProveedores.Controllers
             }
             return View(productos);
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Productos/Create
         public ActionResult Create()
         {
             ViewBag.idCategoria = new SelectList(db.Categorias, "idCategoria", "nombreCategoria");
             return View();
         }
-
+        [Authorize(Roles = "Administrador")]
         // POST: Productos/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -167,7 +169,7 @@ namespace appProveedores.Controllers
             ViewBag.idCategoria = new SelectList(db.Categorias, "idCategoria", "nombreCategoria", productos.idCategoria);
             return View(productos);
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Productos/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -183,7 +185,7 @@ namespace appProveedores.Controllers
             ViewBag.idCategoria = new SelectList(db.Categorias, "idCategoria", "nombreCategoria", productos.idCategoria);
             return View(productos);
         }
-
+        [Authorize(Roles = "Administrador")]
         // POST: Productos/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -200,7 +202,7 @@ namespace appProveedores.Controllers
             ViewBag.idCategoria = new SelectList(db.Categorias, "idCategoria", "nombreCategoria", productos.idCategoria);
             return View(productos);
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Productos/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -215,7 +217,7 @@ namespace appProveedores.Controllers
             }
             return View(productos);
         }
-
+        [Authorize(Roles = "Administrador")]
         // POST: Productos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -226,7 +228,7 @@ namespace appProveedores.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Administrador")]
         protected override void Dispose(bool disposing)
         {
             if (disposing)

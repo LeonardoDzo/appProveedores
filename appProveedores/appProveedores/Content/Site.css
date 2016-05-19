@@ -41,3 +41,36 @@ textarea {
     box-shadow: 0 0 3px #999;
     color: 0 0 3px #999;
 }
+.detail {
+    font: 400 14px/18px myriad-pro,sans-serif;
+}
+.blue {
+    color: #1072d2;
+}
+.f {
+    float: left;
+}
+.lgray {
+    color: #999999;
+}
+.r {
+    float: right;
+}
+.bolder {
+    font-weight: 700;
+}
+#datosEntrega {
+    border-bottom: 0px solid #d6d6d6;
+}
+.section {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e1e1e1;
+    position: relative;
+}
+.addressDescription {
+    font-size: 14px;
+    line-height: 18px;
+    color: #7f7f7f;
+    font: 400 14px/18px myriad-pro,sans-serif;
+}
