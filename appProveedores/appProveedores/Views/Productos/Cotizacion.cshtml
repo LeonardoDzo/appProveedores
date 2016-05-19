@@ -1,4 +1,4 @@
-﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
+﻿@model IEnumerable<appProveedores.Models.ProductoCotizacion>
 
 
 <div class="container service-wrapper">
@@ -51,7 +51,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
                     </td>
-                    <td>
+                    <td>                       
                         <h5>@string.Format("{0:c}", item.Productos.precioUnidad * item.cantidad)</h5>
                     </td>
                 </tr>
