@@ -1,4 +1,4 @@
-﻿@model IEnumerable<appProveedores.Models.ProductoCotizacion>
+﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
 
 
 <div class="container service-wrapper">
@@ -106,6 +106,7 @@
     </div>
 </div>
 
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
@@ -113,11 +114,13 @@
 
         $(document).ready(function () {
             _infoCliente();
+          .load("/Productos/GenerarPDF");
         });
         function _infoCliente() {
             $('#Cliente').empty();
-            $('#Cliente').load("/Productos/_InfoCliente")
+            $('#Cliente').load("/Productos/_InfoCliente");
         }
+
     </script>
 }
 

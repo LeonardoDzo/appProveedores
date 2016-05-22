@@ -11,7 +11,7 @@ namespace appProveedores.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Pedido
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,12 +23,32 @@ namespace appProveedores.Models
     
         public int idPedido { get; set; }
         public string idCliente { get; set; }
-        public System.DateTime fechaPedido { get; set; }
-        public System.DateTime fechaEntrega { get; set; }
-        public System.DateTime fechaEnvio { get; set; }
-        public string direccion { get; set; }
-        public int estado { get; set; }
-        public string codigoSeguridad { get; set; }
+        public System.DateTime fechaPedido { get; set; } = DateTime.Parse("2016-01-01");
+        public System.DateTime fechaEntrega { get; set; } = DateTime.Parse("2016-01-01");
+        public System.DateTime fechaEnvio { get; set; } = DateTime.Parse("2016-01-01");
+        public int estadoPedido { get; set; }
+        [Display(Name = "Código Postal")]
+        [DataType(DataType.PostalCode)]
+        public string codigoPostal { get; set; }
+        [Display(Name = "Nombre de Calle")]
+        [DataType(DataType.Text)]
+        public string calle { get; set; }
+        [Display(Name = "Número Interior")]
+        [DataType(DataType.Text)]
+        public string numeroInterior { get; set; }
+        [Display(Name = "Número Exterior")]
+        [DataType(DataType.Text)]
+        public string numeroExterior { get; set; }
+        [Display(Name = "Colonia")]
+        [DataType(DataType.Text)]
+        public string colonia { get; set; }
+
+        [Display(Name = "Ciudad")]
+        [DataType(DataType.Text)]
+        public string ciudad { get; set; }
+        [Display(Name ="Estado")]
+        [DataType(DataType.Text)]
+        public string estado { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -4,9 +4,9 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using appProveedores.Models;
+using SelectPdf;
 
 namespace appProveedores.Controllers
 { 
@@ -37,22 +37,25 @@ namespace appProveedores.Controllers
         [HttpPost, ActionName("Seleccion")]
         public ActionResult SeleccionConfirmada(int id, int cantidad)
         {
+            Pedido pedidos;
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
-            var pedidos = db.Pedido;
+            if(db.Pedido.Count()> 0)
+            {
+              pedidos = db.Pedido.Where(x => x.idCliente == idCte && x.estadoPedido == 1).FirstOrDefault();
+            }else
+            {
+                pedidos = null;
+            }
 
-            if (pedidos.Count() == 0 || pedidos.Count(x=> x.idCliente == idCte)==0)
+            if ( pedidos == null)
             {
                 Random random = new Random();
                 var codigo = Convert.ToInt32(DateTime.Now.ToString("yyyyMMddHH")) + random.Next(10000000);
                 Pedido pedido = new Pedido()
                 {
                     idCliente = idCte,
-                    fechaEntrega = DateTime.Now,
-                    fechaEnvio = DateTime.Now,
                     fechaPedido = DateTime.Now,
-                    codigoSeguridad = codigo.ToString(),
-                    direccion = "",
-                    estado = 1
+                    estadoPedido = 1
                 };
                 db.Pedido.Add(pedido);
                 db.SaveChanges();
@@ -60,7 +63,7 @@ namespace appProveedores.Controllers
 
             }
 
-            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estado == 1 select u.idPedido).FirstOrDefault();
+            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
 
             ProductoPedido producto = new ProductoPedido()
             {
@@ -70,15 +73,13 @@ namespace appProveedores.Controllers
             };
             db.ProductoPedido.Add(producto);
             db.SaveChanges();
-
-
             return RedirectToAction("Lista", "Productos");
         }
         [Authorize(Roles = "Cliente")]
         public ActionResult _Carrito()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
-            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estado == 1 select u.idPedido).FirstOrDefault();
+            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido== 1 select u.idPedido).FirstOrDefault();
             var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido);
             ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
             return PartialView(productosPedidos);
@@ -93,7 +94,7 @@ namespace appProveedores.Controllers
             return RedirectToAction("Lista", "Productos");
         }
         [Authorize(Roles = "Cliente")]
-        public ActionResult Cotizacion()
+        public async System.Threading.Tasks.Task<ActionResult> Cotizacion()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
             var cotizacion = new Cotización()
@@ -102,33 +103,47 @@ namespace appProveedores.Controllers
                 fechaCotización = DateTime.Now
             };
             db.Cotización.Add(cotizacion);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            var _idCotizacion = (from u in db.Cotización where u.idCliente == idCte select u.idCotización).FirstOrDefault();
-
-            
-            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estado == 1 select u.idPedido).FirstOrDefault();
+            var _idCotizacion = (from u in db.Cotización where u.idCliente == idCte select u.idCotización).ToList().LastOrDefault();
+            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
             var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
             foreach (var item in productosPedidos)
             {
                 ProductoCotizacion producto = new ProductoCotizacion()
-                {                  
+                {
                     idCotizacion = _idCotizacion,
                     idProducto = item.idProducto,
                     cantidad = item.cantidad
                 };
                 db.ProductoCotizacion.Add(producto);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
+                producto = null;
             }
+           
             var productosCotizacion = db.ProductoCotizacion.Where(x => x.idCotizacion == _idCotizacion);
-            ViewBag.SubTotal = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) ;
+            ViewBag.SubTotal = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad);
             ViewBag.IVA = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
-            ViewBag.Total = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad)*1.16;
+            ViewBag.Total = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
 
-            
-            return View(productosCotizacion);
+
+            return View(db.ProductoPedido.Where(x=>x.idPedido == _idPedido));
         }
 
+        public void GenerarPDF()
+        {
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // create a new pdf document converting an url
+            PdfDocument doc = converter.ConvertUrl("http://localhost:15392/Productos/Cotizacion");
+
+            // save pdf document
+            doc.Save( "Sample.pdf");
+
+            // close pdf document
+            doc.Close();
+        }
+      
         public ActionResult buscarCotizacion(int id)
         {
 

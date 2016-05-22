@@ -157,6 +157,7 @@ namespace appProveedores.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await UserManager.AddToRoleAsync(user.Id, "Cliente");
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
@@ -164,7 +165,7 @@ namespace appProveedores.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-                    await UserManager.AddToRoleAsync(user.Id, "Cliente");
+                   
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

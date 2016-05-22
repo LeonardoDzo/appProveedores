@@ -85,9 +85,14 @@
           <Property Name="fechaPedido" Type="datetime" Nullable="false" />
           <Property Name="fechaEntrega" Type="datetime" Nullable="false" />
           <Property Name="fechaEnvio" Type="datetime" Nullable="false" />
-          <Property Name="direccion" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="estado" Type="int" Nullable="false" />
-          <Property Name="codigoSeguridad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="estadoPedido" Type="int" Nullable="false" />
+          <Property Name="codigoPostal" Type="nvarchar" MaxLength="50" />
+          <Property Name="calle" Type="nvarchar" MaxLength="100" />
+          <Property Name="numeroInterior" Type="nvarchar" MaxLength="50" />
+          <Property Name="numeroExterior" Type="nvarchar" MaxLength="50" />
+          <Property Name="colonia" Type="nvarchar" MaxLength="50" />
+          <Property Name="ciudad" Type="nvarchar" MaxLength="50" />
+          <Property Name="estado" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ProductoCotizacion">
           <Key>
@@ -401,9 +406,14 @@
           <Property Name="fechaPedido" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="fechaEntrega" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="fechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="direccion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="estado" Type="Int32" Nullable="false" />
-          <Property Name="codigoSeguridad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="estadoPedido" Type="Int32" Nullable="false" />
+          <Property Name="codigoPostal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="calle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="numeroInterior" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="numeroExterior" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="colonia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Pedido_User" FromRole="Pedido" ToRole="AspNetUsers" />
           <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_Pedido" FromRole="Pedido" ToRole="Pago" />
           <NavigationProperty Name="ProductoPedido" Relationship="Self.FK_ProductoPedido_Pedido" FromRole="Pedido" ToRole="ProductoPedido" />
@@ -694,9 +704,14 @@
                 <ScalarProperty Name="fechaPedido" ColumnName="fechaPedido" />
                 <ScalarProperty Name="fechaEntrega" ColumnName="fechaEntrega" />
                 <ScalarProperty Name="fechaEnvio" ColumnName="fechaEnvio" />
-                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="estadoPedido" ColumnName="estadoPedido" />
+                <ScalarProperty Name="codigoPostal" ColumnName="codigoPostal" />
+                <ScalarProperty Name="calle" ColumnName="calle" />
+                <ScalarProperty Name="numeroInterior" ColumnName="numeroInterior" />
+                <ScalarProperty Name="numeroExterior" ColumnName="numeroExterior" />
+                <ScalarProperty Name="colonia" ColumnName="colonia" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
-                <ScalarProperty Name="codigoSeguridad" ColumnName="codigoSeguridad" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

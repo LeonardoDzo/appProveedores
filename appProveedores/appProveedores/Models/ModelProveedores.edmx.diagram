@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0adc21d1580a497ab2da3c993f6bf4a3" Name="Diagram1">
+      <Diagram DiagramId="0977b466485a4802aa71b35007402468" Name="Diagram1">
         <EntityTypeShape EntityType="dbProveedoresModel.AspNetRoles" Width="1.5" PointX="1.5" PointY="13.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProveedoresModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.Categorias" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.Cotización" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProveedoresModel.Facturas" Width="1.5" PointX="7.5" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProveedoresModel.Pago" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProveedoresModel.Pedido" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Facturas" Width="1.5" PointX="7.5" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Pago" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Pedido" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.ProductoCotizacion" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.ProductoPedido" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.Productos" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />

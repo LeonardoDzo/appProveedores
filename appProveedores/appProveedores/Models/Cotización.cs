@@ -14,7 +14,6 @@ namespace appProveedores.Models
     
     public partial class Cotización
     {
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Cotización()
         {
