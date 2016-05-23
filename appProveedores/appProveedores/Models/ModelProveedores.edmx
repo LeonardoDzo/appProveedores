@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbProveedoresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbProveedoresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -62,7 +62,7 @@
             <PropertyRef Name="idFactura" />
           </Key>
           <Property Name="idFactura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="idPago" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idPago" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="razonSocial" Type="nvarchar(max)" Nullable="false" />
           <Property Name="RFC" Type="nchar" MaxLength="13" Nullable="false" />
           <Property Name="fechaFacturacion" Type="nchar" MaxLength="10" Nullable="false" />
@@ -71,7 +71,7 @@
           <Key>
             <PropertyRef Name="idPago" />
           </Key>
-          <Property Name="idPago" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idPago" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="idPedido" Type="int" Nullable="false" />
           <Property Name="montoPago" Type="real" Nullable="false" />
           <Property Name="fechaPago" Type="datetime" Nullable="false" />
@@ -319,8 +319,7 @@
             <End Role="Productos" EntitySet="Productos" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbProveedoresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -380,7 +379,7 @@
             <PropertyRef Name="idFactura" />
           </Key>
           <Property Name="idFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idPago" Type="Guid" Nullable="false" />
+          <Property Name="idPago" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="razonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RFC" Type="String" MaxLength="13" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="fechaFacturacion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
@@ -390,7 +389,7 @@
           <Key>
             <PropertyRef Name="idPago" />
           </Key>
-          <Property Name="idPago" Type="Guid" Nullable="false" />
+          <Property Name="idPago" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="idPedido" Type="Int32" Nullable="false" />
           <Property Name="montoPago" Type="Single" Nullable="false" />
           <Property Name="fechaPago" Type="DateTime" Nullable="false" Precision="3" />

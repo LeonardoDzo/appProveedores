@@ -20,7 +20,7 @@ namespace appProveedores.Models
             this.Facturas = new HashSet<Facturas>();
         }
     
-        public System.Guid idPago { get; set; }
+        public string idPago { get; set; }
         public int idPedido { get; set; }
         public float montoPago { get; set; }
         public System.DateTime fechaPago { get; set; }

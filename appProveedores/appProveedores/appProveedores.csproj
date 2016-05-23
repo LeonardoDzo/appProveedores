@@ -256,6 +256,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelProveedores.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Pagar.cs" />
     <Compile Include="Models\Pago.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
@@ -376,8 +377,9 @@
     <Content Include="Views\Compra\Revisa.cshtml" />
     <Content Include="Views\Compra\_Carrito.cshtml" />
     <Content Include="Views\Compra\Checkout.cshtml" />
-    <Content Include="Views\Compra\Pago.cshtml" />
     <Content Include="Views\Compra\_Pedido.cshtml" />
+    <Content Include="Views\Compra\Pay.cshtml" />
+    <Content Include="Views\Compra\Factura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

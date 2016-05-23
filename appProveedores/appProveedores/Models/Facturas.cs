@@ -11,16 +11,12 @@ namespace appProveedores.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class Facturas
     {
         public int idFactura { get; set; }
-        public System.Guid idPago { get; set; }
-        [Display(Name = "Razón Social")]
-        [DataType(DataType.Text)]
+        public string idPago { get; set; }
         public string razonSocial { get; set; }
-        [Display(Name = "RFC")]
-        [DataType(DataType.Text)]
         public string RFC { get; set; }
         public string fechaFacturacion { get; set; }
     

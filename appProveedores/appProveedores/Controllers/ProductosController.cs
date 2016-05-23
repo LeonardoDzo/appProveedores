@@ -49,13 +49,13 @@ namespace appProveedores.Controllers
 
             if ( pedidos == null)
             {
-                Random random = new Random();
-                var codigo = Convert.ToInt32(DateTime.Now.ToString("yyyyMMddHH")) + random.Next(10000000);
                 Pedido pedido = new Pedido()
                 {
                     idCliente = idCte,
                     fechaPedido = DateTime.Now,
-                    estadoPedido = 1
+                    estadoPedido = 1,
+                    fechaEntrega = DateTime.Now,
+                    fechaEnvio = DateTime.Now
                 };
                 db.Pedido.Add(pedido);
                 db.SaveChanges();
@@ -65,22 +65,33 @@ namespace appProveedores.Controllers
 
             var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
 
-            ProductoPedido producto = new ProductoPedido()
+            var producto = (from u in db.ProductoPedido where u.idPedido == _idPedido && u.idProducto == id select u).FirstOrDefault();
+
+            if(producto != null)
             {
-                idPedido = _idPedido,
-                idProducto = id,
-                cantidad = cantidad
-            };
-            db.ProductoPedido.Add(producto);
+                producto.cantidad += cantidad;
+                db.Entry(producto).State = EntityState.Modified;
+            }
+            else
+            {
+                ProductoPedido product = new ProductoPedido()
+                {
+                    idPedido = _idPedido,
+                    idProducto = id,
+                    cantidad = cantidad
+                };
+                db.ProductoPedido.Add(product);
+            }
             db.SaveChanges();
             return RedirectToAction("Lista", "Productos");
         }
-        [Authorize(Roles = "Cliente")]
+
+       
         public ActionResult _Carrito()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
             var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido== 1 select u.idPedido).FirstOrDefault();
-            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido);
+            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
             ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
             return PartialView(productosPedidos);
         }
@@ -88,9 +99,14 @@ namespace appProveedores.Controllers
         [HttpPost, ActionName("_Carrito")]
         public ActionResult Quitar(int? id)
         {
-            var producto = db.ProductoPedido.Find(id);
-            db.ProductoPedido.Remove(producto);
-            db.SaveChanges();
+            if (id != null)
+            {
+                var producto = db.ProductoPedido.Find(id);
+                db.ProductoPedido.Remove(producto);
+                db.SaveChanges();
+
+            }
+     
             return RedirectToAction("Lista", "Productos");
         }
         [Authorize(Roles = "Cliente")]

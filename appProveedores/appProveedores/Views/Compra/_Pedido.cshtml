@@ -12,8 +12,8 @@
         </div>
     </div>
     <div id="adress" class="addressDescription">
-        <span id="lblCalle3" class="street">@Html.DisplayFor(model=> model.direccion)</span><br>
-        <span id="lblCode3" class="cp-delegacion">@Html.DisplayFor(model=> model.codigoSeguridad)</span><br>
+        <span id="lblCalle3" class="street">@ViewBag.direccion</span><br>
+        <span id="lblCode3" class="cp-delegacion">@Html.DisplayFor(model=> model.codigoPostal)</span><br>
         <span id="lblstate3">@Html.DisplayFor(model => model.estado)</span>
     </div>
     <div id="contact" class="addressDescription">
