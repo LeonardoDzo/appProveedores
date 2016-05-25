@@ -1,0 +1,61 @@
+﻿@model IEnumerable<appProveedores.Models.Pedido>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fechaPedido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fechaEntrega)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fechaEnvio)
+        </th>
+        <td>Estado</td>
+        <th>Dias restantes</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.fechaPedido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fechaEntrega)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fechaEnvio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AspNetUsers.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Detalles", "Detalles", new { id=item.idPedido })
+        </td>
+        <td>
+            @if (item.estadoPedido == 2)
+            {
+                <strong>Pediente</strong>
+            }
+            else
+            {
+                <strong>Finalizado</strong>
+            }
+        </td>
+        <td>
+            @(DateTime.Now.Subtract(item.fechaEntrega)) días
+        </td>
+    </tr>
+}
+
+</table>

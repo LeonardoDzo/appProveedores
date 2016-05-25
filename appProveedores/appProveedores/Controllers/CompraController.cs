@@ -68,8 +68,9 @@ namespace appProveedores.Controllers
                 return View("direccion", model);
         }
 
-        public ActionResult Pay()
+        public ActionResult Pay(bool error = false)
         {
+            if (error) ViewBag.error = "si";
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
             var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
             var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
@@ -111,7 +112,7 @@ namespace appProveedores.Controllers
                 {
                     return RedirectToAction("Lista", "Productos");
                 }
-                return View("pay");
+                return RedirectToAction("Pay", "Compra", new { error = true});
             }
         }
 
@@ -173,8 +174,10 @@ namespace appProveedores.Controllers
         {
             try
             {
+
                 var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
                 var _Pedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u).FirstOrDefault();
+             
                 var request = (HttpWebRequest)WebRequest.Create("http://189.170.117.153:8080/api/Transaction");
                 var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _Pedido.idPedido).ToList();
                 Pagar userPaymment = new Pagar()
@@ -211,10 +214,12 @@ namespace appProveedores.Controllers
 
                 };
                 _Pedido.estadoPedido = 2;
+                _Pedido.fechaEntrega = DateTime.Now.AddDays(10);
+                _Pedido.fechaEnvio = DateTime.Now;
                 db.Entry(_Pedido).State = EntityState.Modified;
                 db.Pago.Add(_pay);
                 db.SaveChanges();
-               // actualizaProductos(_Pedido.idPedido);
+                actualizaProductos(_Pedido.idPedido);
                 return _pay.idPago;
             }
             catch (System.Net.WebException ex)
@@ -223,14 +228,17 @@ namespace appProveedores.Controllers
             }
         }
 
+
         private void actualizaProductos(int id)
         {
-            foreach(var item in db.ProductoPedido.Where(x=>x.idPedido == id))
+            var productos = db.ProductoPedido.Where(x => x.idPedido == id).ToList();
+            foreach (var item in productos)
             {
                 var product = db.Productos.Where(x => x.idProducto == item.idProducto).First();
                 product.cantxUnidad -= item.cantidad;
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
+                product = null;
             }
         }
 
@@ -246,6 +254,7 @@ namespace appProveedores.Controllers
                 pedido.estado = model.estado;
                 pedido.codigoPostal = model.codigo;
                 pedido.fechaPedido = DateTime.Now;
+                
                 db.Entry(pedido).State = EntityState.Modified;
                 db.SaveChanges();
                 return true;

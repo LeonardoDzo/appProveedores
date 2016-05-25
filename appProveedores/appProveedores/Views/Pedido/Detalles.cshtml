@@ -1,0 +1,42 @@
+﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles del Pedido</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descuento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Productos.nombre)
+        </th>
+        <th>Total</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.cantidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Productos.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.Productos.precioUnidad)
+        </td>
+        <td>
+            <h5>@string.Format("{0:c}", item.Productos.precioUnidad * item.cantidad)</h5>
+        </td>
+    </tr>
+}
+
+</table>
+@Html.ActionLink("Devolver", "Index")
