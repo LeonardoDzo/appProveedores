@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
 
 @{
-    ViewBag.Title = "Revisa";
+    ViewBag.Title = "Index";
 }
 
-<h2>Revisa</h2>
+<h2>Index</h2>
 
 <table class="table">
     <tr>
@@ -12,11 +12,10 @@
             @Html.DisplayNameFor(model => model.cantidad)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Pedido.idCliente)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Productos.nombre)
         </th>
+        <th> Precio unitario</th>
+        <th> Total</th>
         <th></th>
     </tr>
 
@@ -29,13 +28,16 @@
             @Html.DisplayFor(modelItem => item.Productos.nombre)
         </td>
         <td>
-            @using (Html.BeginForm("_Carrito", "Productos", "POST"))
-            {
-                <input type="hidden" value="@item.id" name="id" />
-                <input type="submit" value="Quitar Producto" class="btn-danger" />
-            }
+           $ @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
+        </td>
+        <td>
+           $ @(item.Productos.precioUnidad * item.cantidad)
+        </td>
+        <td>
+            @Html.ActionLink("Quitar Producto", "Quitar", new { id=item.id }) 
         </td>
     </tr>
 }
+
 </table>
-<a class="btn btn-success" href="/Compra/Checkout">Continuar</a>
+<a class="btn btn-success" href="/Compra/direccion">Continuar</a>

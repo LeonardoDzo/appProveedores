@@ -17,7 +17,7 @@ namespace appProveedores.Models
         [Display(Name = "Código de seguridad")]
         public int SecurityCode {get; set;}
 
-        public string Token = "F0E9D75D-6AA8-404C-B25D-9BD6B242D359";
+        public string Token = "6465fae5-e445-476b-b3d0-39cd1ddbf510";
 
     }
 }

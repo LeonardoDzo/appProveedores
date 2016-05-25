@@ -236,6 +236,7 @@
     <Compile Include="Models\Cotización.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dirección.cs" />
     <Compile Include="Models\Facturas.cs">
       <DependentUpon>ModelProveedores.tt</DependentUpon>
     </Compile>
@@ -374,12 +375,14 @@
     <Content Include="Views\Productos\Cotizacion.cshtml" />
     <Content Include="Views\Productos\_InfoCliente.cshtml" />
     <Content Include="Views\Productos\buscarCotizacion.cshtml" />
-    <Content Include="Views\Compra\Revisa.cshtml" />
     <Content Include="Views\Compra\_Carrito.cshtml" />
-    <Content Include="Views\Compra\Checkout.cshtml" />
     <Content Include="Views\Compra\_Pedido.cshtml" />
     <Content Include="Views\Compra\Pay.cshtml" />
     <Content Include="Views\Compra\Factura.cshtml" />
+    <Content Include="Views\Compra\_ProductosComprados.cshtml" />
+    <Content Include="Views\Compra\_datosFiscales.cshtml" />
+    <Content Include="Views\Compra\Index.cshtml" />
+    <Content Include="Views\Compra\direccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

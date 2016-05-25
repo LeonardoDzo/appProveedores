@@ -2,8 +2,113 @@
 @{
     ViewBag.Title = "Factura";
 }
+<input type="button" id="generar" class="btn-success" value="Generar PDF" />
+<input hidden type="text" id="id"  value=@ViewBag.ID/>
+<div id="PDF">
+    <div class="container">
+        <div class="col-lg-12" style="background-color:#0056b2">FACTURA ELECTRONICA (CFDI)</div>
+        <h2>PROVEEMAX</h2>
+        <br />
+        <div class="col-lg-3"><img src="~/fonts/proveedores.png" height="120" width="120" /></div>
+        <div class="col-lg-3">
+            RFC: AAA010101AAA <br />
+            Zapotal No. Ext S/N Col. La Manga<br />
+            30308927834<br />
+            Telefono: 2-57-57<br />
+        </div>
+        <div class="col-lg-6 r">
+            <strong>Factura:</strong> <br />
+            @ViewBag.idFactura<br />
+            <strong>Folio Fiscal:</strong><br />
+            84CF425643B44543231SDEW23D56<br />
+            <strong>No de Serie del Certificado del CSD</strong><br />
+            200010000000001000005868<br />
+            <strong>Fecha y hora de la emisión</strong>
+            @ViewBag.fecha <br />
+        </div>
+        LUGAR DE EXPEDICIÓN: <strong>HERMOSILLO, SONORA</strong>
+        <hr style="color: #0056b2;" />
 
-<h2>Factura</h2>
+        <div id="DatosFiscales" class="col-lg-12 left">
 
-<h1>PAGO CORRECTO</h1>
+        </div>
+        <div id="productos" class="col-lg-12">
+
+        </div>
+        <br />
+        <br />
+        <strong>No de Srie del Certificado del SAT:</strong> 20001000003231240123 <br />
+        <strong>Fecha y hora del certificado:</strong> @ViewBag.fecha<br />
+        <hr style="color: #0056b2;" />
+        <div class="col-lg-4">Pago en una sola exhibición</div>
+        <div class="col-lg-4">Esta es una representación impresa</div>
+        <div class="col-lg-4">Efectos fiscales de pago</div>
+
+    </div>
+   
+    
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    <script type="text/javascript" src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            _datosFiscales();
+            _Productos();
+        });
+        function _datosFiscales() {
+            $('#DatosFiscales').empty();
+            $('#DatosFiscales').load("/Compra/_datosFiscales?idFactura=" + $("#id").val());
+        }
+        function _Productos() {
+            $('#productos').empty();
+            $('#productos').load("/Compra/_ProductosComprados?idFactura=" + $("#id").val());
+        }
+        (function () {
+            var
+             form = $('#PDF'),
+             cache_width = form.width(),
+             a4 = [595.28, 841.89];  // for a4 size paper width and height
+
+            $('#generar').on('click', function () {
+                $('body').scrollTop(0);
+                createPDF();
+            });
+            //create pdf
+            function createPDF() {
+                getCanvas().then(function (canvas) {
+                    var
+                    img = canvas.toDataURL("image/png"),
+                    doc = new jsPDF({
+                        unit: 'px',
+                        format: 'a4'
+                    });
+                    var fecha = new Date();
+                    doc.addImage(img, 'JPEG', 20, 20);
+                    doc.save('Balancede' + $("#StartDate").val() + 'to' + $("#EndDate").val() + '.pdf');
+                    form.width(cache_width);
+                });
+            }
+
+            // create canvas object
+            function getCanvas() {
+                form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                return html2canvas(form, {
+                    imageTimeout: 2000,
+                    removeContainer: true
+                });
+            }
+
+        }());
+
+    </script>
+}
+
+
+
+
 

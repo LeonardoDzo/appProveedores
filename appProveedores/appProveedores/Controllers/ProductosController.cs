@@ -66,6 +66,7 @@ namespace appProveedores.Controllers
             var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
 
             var producto = (from u in db.ProductoPedido where u.idPedido == _idPedido && u.idProducto == id select u).FirstOrDefault();
+            var _Producto = db.Productos.Find(id);
 
             if(producto != null)
             {

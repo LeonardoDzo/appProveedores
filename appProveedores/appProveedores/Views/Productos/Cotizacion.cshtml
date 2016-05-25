@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
 
-
-<div class="container service-wrapper">
+<input type="button" id="generar" class="btn-success" value="Generar PDF"/>
+<div id="PDF" class="container service-wrapper">
     <br />
     <div class="col-lg-9">
 
@@ -110,16 +110,61 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    <script type="text/javascript" src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
             _infoCliente();
-          .load("/Productos/GenerarPDF");
+          
+          
         });
+
+
         function _infoCliente() {
             $('#Cliente').empty();
             $('#Cliente').load("/Productos/_InfoCliente");
         }
+        (function () {
+            var
+             form = $('#PDF'),
+             cache_width = form.width(),
+             a4 = [595.28, 841.89];  // for a4 size paper width and height
+
+            $('#generar').on('click', function () {
+                $('body').scrollTop(0);
+                createPDF();
+            });
+            //create pdf
+            function createPDF() {
+                getCanvas().then(function (canvas) {
+                    var
+                    img = canvas.toDataURL("image/png"),
+                    doc = new jsPDF({
+                        unit: 'px',
+                        format: 'a4'
+                    });
+                    var fecha = new Date();
+                    doc.addImage(img, 'JPEG', 20, 20);
+                    doc.save('Balancede' + $("#StartDate").val() + 'to' + $("#EndDate").val() + '.pdf');
+                    form.width(cache_width);
+                });
+            }
+
+            // create canvas object
+            function getCanvas() {
+                form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                return html2canvas(form, {
+                    imageTimeout: 2000,
+                    removeContainer: true
+                });
+            }
+
+        }());
+
+           
+       
+
 
     </script>
 }

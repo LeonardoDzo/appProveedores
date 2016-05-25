@@ -382,7 +382,7 @@
           <Property Name="idPago" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="razonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RFC" Type="String" MaxLength="13" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="fechaFacturacion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="fechaFacturacion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Pago" Relationship="Self.FK_Facturas_Pago" FromRole="Facturas" ToRole="Pago" />
         </EntityType>
         <EntityType Name="Pago">

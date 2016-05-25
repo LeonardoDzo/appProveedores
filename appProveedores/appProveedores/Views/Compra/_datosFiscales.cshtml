@@ -1,0 +1,31 @@
+﻿@model appProveedores.Models.Facturas
+
+<div>
+    <h4>Facturas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            RECEPTOR:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.razonSocial)
+        </dd>
+
+        <dt>
+            RFC:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RFC)
+        </dd>
+
+        <dt>
+            DIRECCION:
+        </dt>
+
+        <dd>
+           @ViewBag.direccion
+        </dd>
+    </dl>
+</div>
