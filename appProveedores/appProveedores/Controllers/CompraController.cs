@@ -74,6 +74,10 @@ namespace appProveedores.Controllers
             var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
             var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
             ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
+            if(ViewBag.Total == 0)
+            {
+              return RedirectToAction("Lista", "Productos");
+            }
             return View();
         }
 
@@ -94,23 +98,35 @@ namespace appProveedores.Controllers
                 };
                 db.Facturas.Add(factura);
                 db.SaveChanges();
-                return View("Factura");
-            }else
+                return RedirectToAction("Factura", "Compra", new {id =factura.idFactura });
+            }
+            else
             {
                 var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
                 var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
                 var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
+
                 ViewBag.Total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
+                if (ViewBag.Total == 0)
+                {
+                    return RedirectToAction("Lista", "Productos");
+                }
                 return View("pay");
             }
         }
 
-        public ActionResult Factura()
+        public ActionResult Factura(int id=0)
         {
-            var facturas = db.Facturas.ToList();
-            ViewBag.fecha = facturas.Last().fechaFacturacion;
-            ViewBag.ID = facturas.Last().idFactura;
-            return View();
+            if (id > 0)
+            {
+                ViewBag.fecha = db.Facturas.Find(id).fechaFacturacion;
+                ViewBag.ID = db.Facturas.Find(id).idFactura;
+                return View();
+            }else
+            {
+                return RedirectToAction("Lista", "Productos");
+            }
+           
         }
 
         #region Vistas Parciales
@@ -151,36 +167,37 @@ namespace appProveedores.Controllers
             return PartialView(productos);
         }
         #endregion
-        
 
+        #region Metodos Internos
         private string VerificaPago(Pagar pago)
         {
-            var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
-            var _Pedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u).FirstOrDefault();
-            var request = (HttpWebRequest)WebRequest.Create("http://192.168.1.156:8081/api/Transaction");
-            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _Pedido.idPedido).ToList();
-            Pagar userPaymment = new Pagar()
-            {
-                Amount = pago.Amount,
-                CardNumber = pago.CardNumber,
-                ExpirationDate = pago.ExpirationDate,
-                SecurityCode = pago.SecurityCode
-            };
-
-            var userData = new JavaScriptSerializer().Serialize(userPaymment);
-            var data = Encoding.ASCII.GetBytes(userData);
-
-            request.Method = "POST";
-            request.ContentType = "application/json";
-            request.ContentLength = data.Length;
-
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
             try
             {
+                var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
+                var _Pedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u).FirstOrDefault();
+                var request = (HttpWebRequest)WebRequest.Create("http://189.170.117.153:8080/api/Transaction");
+                var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _Pedido.idPedido).ToList();
+                Pagar userPaymment = new Pagar()
+                {
+                    Amount = pago.Amount,
+                    CardNumber = pago.CardNumber,
+                    ExpirationDate = pago.ExpirationDate,
+                    SecurityCode = pago.SecurityCode
+                };
+
+                var userData = new JavaScriptSerializer().Serialize(userPaymment);
+                var data = Encoding.ASCII.GetBytes(userData);
+
+            
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.ContentLength = data.Length;
+
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+
                 var response = request.GetResponse();
                 Stream datastream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(datastream);
@@ -239,5 +256,6 @@ namespace appProveedores.Controllers
             }
             
         }
+        #endregion
     }
 }

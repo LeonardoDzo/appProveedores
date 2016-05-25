@@ -5,7 +5,7 @@
 }
 
 <h2>Seleccion</h2>
-
+<input hidden value=@ViewBag.error id="error" />
 <div>
     <h4>Productos</h4>
     <hr />
@@ -61,3 +61,17 @@
     <a href="/Productos/Lista" class="form-control">Devolverte</a>                                                                                 
    }
 </p>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($("#error").val() == "si") {
+                sweetAlert('Oops...', 'No contamos con tantos productos!', 'error');
+            }
+        });
+       
+    </script>
+  
+}

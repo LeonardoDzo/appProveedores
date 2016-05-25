@@ -8,6 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/jquery-ui.css")
+    @Styles.Render("~/Styles/sweetalert.css")
 
 </head>
 <body>
@@ -55,6 +56,7 @@
             <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
         </footer>
     </div>
+    @Scripts.Render("~/Scripts/sweetalert.min.js")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")

@@ -3,7 +3,7 @@
     ViewBag.Title = "Factura";
 }
 <input type="button" id="generar" class="btn-success" value="Generar PDF" />
-<input hidden type="text" id="id"  value=@ViewBag.ID/>
+<input hidden type="text" id="id"  value=@ViewBag.ID />
 <div id="PDF">
     <div class="container">
         <div class="col-lg-12" style="background-color:#0056b2">FACTURA ELECTRONICA (CFDI)</div>
@@ -18,7 +18,7 @@
         </div>
         <div class="col-lg-6 r">
             <strong>Factura:</strong> <br />
-            @ViewBag.idFactura<br />
+            @ViewBag.ID<br />
             <strong>Folio Fiscal:</strong><br />
             84CF425643B44543231SDEW23D56<br />
             <strong>No de Serie del Certificado del CSD</strong><br />

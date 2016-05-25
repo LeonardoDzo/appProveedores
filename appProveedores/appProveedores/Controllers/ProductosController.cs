@@ -29,46 +29,38 @@ namespace appProveedores.Controllers
         }
         [Authorize(Roles = "Cliente")]
         [HttpGet]
-        public ActionResult Seleccion(int id)
+        public ActionResult Seleccion(int id, bool error = false)
         {
+            if (error)
+            {
+                ViewBag.error = "si";
+            }
             return View(db.Productos.Find(id));
         }
         [Authorize(Roles = "Cliente")]
         [HttpPost, ActionName("Seleccion")]
         public ActionResult SeleccionConfirmada(int id, int cantidad)
         {
-            Pedido pedidos;
-            var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
-            if(db.Pedido.Count()> 0)
+            if (guardaProducto(id, cantidad))
+                return RedirectToAction("Lista", "Productos");
+            else
+                return RedirectToAction("Seleccion", "Productos", new { id = id, error = true });
+
+        }
+
+        private bool guardaProducto(int id, int cantidad)
+        {
+
+            if(!verificaCantidad(id, cantidad))
             {
-              pedidos = db.Pedido.Where(x => x.idCliente == idCte && x.estadoPedido == 1).FirstOrDefault();
-            }else
-            {
-                pedidos = null;
+                return false;
             }
 
-            if ( pedidos == null)
-            {
-                Pedido pedido = new Pedido()
-                {
-                    idCliente = idCte,
-                    fechaPedido = DateTime.Now,
-                    estadoPedido = 1,
-                    fechaEntrega = DateTime.Now,
-                    fechaEnvio = DateTime.Now
-                };
-                db.Pedido.Add(pedido);
-                db.SaveChanges();
-                pedido = null;
-
-            }
-
-            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
-
+            var _idPedido= verificaPedido();
             var producto = (from u in db.ProductoPedido where u.idPedido == _idPedido && u.idProducto == id select u).FirstOrDefault();
             var _Producto = db.Productos.Find(id);
-
-            if(producto != null)
+            
+            if (producto != null)
             {
                 producto.cantidad += cantidad;
                 db.Entry(producto).State = EntityState.Modified;
@@ -84,10 +76,48 @@ namespace appProveedores.Controllers
                 db.ProductoPedido.Add(product);
             }
             db.SaveChanges();
-            return RedirectToAction("Lista", "Productos");
+            return true;
         }
+        private bool verificaCantidad(int id,  int cantidad)
+        {
+            var _Producto = db.Productos.Find(id);
+            if (cantidad <= _Producto.cantxUnidad)
+                return true;
+            else
+                return false;
+            
+        }
+        private int verificaPedido()
+        {
+            Pedido pedidos;
+            var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
+            if (db.Pedido.Count() > 0)
+            {
+                pedidos = db.Pedido.Where(x => x.idCliente == idCte && x.estadoPedido == 1).FirstOrDefault();
+            }
+            else
+            {
+                pedidos = null;
+            }
 
-       
+            if (pedidos == null)
+            {
+                Pedido pedido = new Pedido()
+                {
+                    idCliente = idCte,
+                    fechaPedido = DateTime.Now,
+                    estadoPedido = 1,
+                    fechaEntrega = DateTime.Now,
+                    fechaEnvio = DateTime.Now
+                };
+                db.Pedido.Add(pedido);
+                db.SaveChanges();
+                pedido = null;
+                return pedido.idPedido;
+            }
+
+            return pedidos.idPedido;
+        }
         public ActionResult _Carrito()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
