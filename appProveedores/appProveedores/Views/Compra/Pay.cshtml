@@ -46,19 +46,7 @@
                 @Html.ValidationMessageFor(model => model.SecurityCode, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group">
-            @Html.Label("RFC", "RFC", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="text" id="rfc" required placeholder="RFC" name="rfc" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("Razón Social:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="text" id="razon" required placeholder="razón Social" name="razon" class="form-control" />
-
-            </div>
-        </div>
+        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" id="Enviar" value="PAGAR" class="btn btn-success" />

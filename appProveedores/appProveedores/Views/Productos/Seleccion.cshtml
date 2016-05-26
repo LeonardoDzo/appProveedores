@@ -6,61 +6,52 @@
 
 <h2>Seleccion</h2>
 <input hidden value=@ViewBag.error id="error" />
-<div>
-    <h4>Productos</h4>
-    <hr />
+<div  class="container">
+    <div class="col-lg-6 ">
+        <img src="http://www.stickven.com/FuentesGlobales/iconos/productos.png" height="300" width="300"/>
+   
+        <br />
+        <dl class="dl-horizontal">
+       
 
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nombre)
-        </dt>
+            <dd>
+                <h4> @Html.DisplayFor(model => model.nombre)</h4>
+                <hr />
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.nombre)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.precioUnidad)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.cantxUnidad)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.precioUnidad)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.cantxUnidad)
-        </dd>
+ 
+            <dt>
+               CATEGORÍA
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.precioUnidad)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Categorias.nombreCategoria)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.precioUnidad)
-        </dd>
+        </dl>
+    </div>
+    <div class="col-lg-3">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.unidadExistencia)
-        </dt>
+        <h4>Selecciona una cantidad</h4>
+        <hr />
+        <p>
+            @using (Html.BeginForm("Seleccion", "Productos", "POST"))
+            {
+                <input type="number" required id="cantidad" name="cantidad" class="form-control" />
+                <input type="submit" value="Agregar al carrito" class="form-control" />
+                <a href="/Productos/Lista" class="form-control">Devolverte</a>
+            }
+        </p>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.unidadExistencia)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Categorias.nombreCategoria)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Categorias.nombreCategoria)
-        </dd>
-
-    </dl>
-</div>
-<p>
-   @using (Html.BeginForm("Seleccion", "Productos", "POST"))
-   {
-    <input type="number" id="cantidad" name="cantidad" class="form-control" />
-    <input type="submit" value="Agregar al carrito" class="form-control" />
-    <a href="/Productos/Lista" class="form-control">Devolverte</a>                                                                                 
-   }
-</p>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

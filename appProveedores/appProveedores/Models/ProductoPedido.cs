@@ -11,12 +11,13 @@ namespace appProveedores.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class ProductoPedido
     {
         public int id { get; set; }
         public int idProducto { get; set; }
         public int idPedido { get; set; }
+        [Display(Name = "Cantidad")]
         public int cantidad { get; set; }
         public Nullable<float> descuento { get; set; }
     

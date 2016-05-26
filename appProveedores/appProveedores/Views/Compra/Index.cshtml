@@ -28,10 +28,10 @@
             @Html.DisplayFor(modelItem => item.Productos.nombre)
         </td>
         <td>
-           $ @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
+           @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
         </td>
         <td>
-           $ @(item.Productos.precioUnidad * item.cantidad)
+           $@(item.Productos.precioUnidad * item.cantidad)
         </td>
         <td>
             @Html.ActionLink("Quitar Producto", "Quitar", new { id=item.id }) 

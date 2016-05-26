@@ -11,7 +11,7 @@ namespace appProveedores.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Productos
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,9 +23,18 @@ namespace appProveedores.Models
     
         public int idProducto { get; set; }
         public int idCategoria { get; set; }
+        [Required]
+        [Display(Name = "Nombre")]
         public string nombre { get; set; }
+        [Required]
+        [Display(Name = "Cantidad")]
         public int cantxUnidad { get; set; }
+        [Required]
+        [Display(Name = "Precio")]
+        [DataType(DataType.Currency)]
         public float precioUnidad { get; set; }
+        [Required]
+        [Display(Name = "Existencia")]
         public bool unidadExistencia { get; set; }
     
         public virtual Categorias Categorias { get; set; }

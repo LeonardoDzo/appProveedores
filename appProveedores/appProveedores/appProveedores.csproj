@@ -283,7 +283,11 @@
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\alert.png" />
+    <Content Include="fonts\entrega-multiplos-enderecos.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\prestamos1.png" />
+    <Content Include="fonts\productos-importados-interna01.jpg" />
     <Content Include="fonts\proveedores.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -388,6 +392,7 @@
     <Content Include="Views\Compra\direccion.cshtml" />
     <Content Include="Views\Pedido\Index.cshtml" />
     <Content Include="Views\Pedido\Detalles.cshtml" />
+    <Content Include="Views\Compra\generaFactura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

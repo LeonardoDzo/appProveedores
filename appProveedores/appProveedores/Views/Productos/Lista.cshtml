@@ -4,10 +4,9 @@
     ViewBag.Title = "Lista";
 }
 
-<h2>Lista</h2>
-
+<input hidden id="error" value=@ViewBag.error />
 <div class="container">
-    <div id="Carrito" class="form-control-static">
+    <div id="Carrito" class="form-control-static container">
 
     </div>
     <div class="row ">
@@ -37,6 +36,23 @@
 
         $(document).ready(function () {
             _Carrito();
+            if ($("#error").val() == "Compra") {
+                swal({
+                    title: "Ups!",
+                    text: "Debes seleccionar productos para Comprar.",
+                    imageUrl: "/fonts/alert.png"
+                });
+            }
+            if ($("#error").val() == "cotizacion") {
+                swal({
+                    title: "Ups!",
+                    text: "Debes seleccionar productos para poder Cotizar.",
+                    imageUrl: "/fonts/alert.png"
+                });
+            }
+            if ($("#error").val() == "noseencontro") {
+                swal("OPSSS!", "No se encontro", "error");
+            }
         });
         function _Carrito() {
             $('#Carrito').empty();

@@ -14,8 +14,8 @@ namespace appProveedores.Controllers
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
             actualizaPedidos();
-            var pedidos = db.Pedido.Where(x => x.idCliente == idCte && x.estadoPedido >1);
-            return View();
+            var pedidos = db.Pedido.Where(x => x.idCliente == idCte && x.estadoPedido >1).OrderByDescending(x=> x.fechaEntrega).Include(p=>p.Pago).ToList();
+            return View(pedidos);
         }
 
         private void actualizaPedidos()
@@ -32,11 +32,11 @@ namespace appProveedores.Controllers
             }
         }
 
-        public ActionResult Detalles(int? idPedido)
+        public ActionResult Detalles(int? id)
         {
-            if(idPedido != null)
+            if(id != null)
             {
-                var pedido = db.ProductoPedido.Where(x=>x.idPedido== idPedido).ToList();
+                var pedido = db.ProductoPedido.Where(x=>x.idPedido== id).ToList();
                 return View(pedido);
             }else
             {

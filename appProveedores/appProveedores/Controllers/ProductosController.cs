@@ -21,10 +21,27 @@ namespace appProveedores.Controllers
             return View(productos.ToList());
         }
         [Authorize(Roles = "Cliente")]
-        public ActionResult Lista()
+        public ActionResult Lista(string error = "", string _productos = "")
         {
-            var productos = db.Productos.Where(x => x.unidadExistencia == true).
+            if (error!= "")
+            {
+                ViewBag.error = error;
+            }
+            
+            var productos = db.Productos.Where(x => x.unidadExistencia == true && x.cantxUnidad > 0).
                 Include(p => p.Categorias).OrderBy(c => c.idCategoria);
+            if(_productos!= "")
+            {
+                productos = productos.Where(x => x.nombre == _productos).Include(p=> p.Categorias).OrderBy(c=>c.idCategoria);
+            }
+
+            if(productos.Count() == 0)
+            {
+                ViewBag.error = "noseencontro";
+                productos = db.Productos.Where(x => x.unidadExistencia == true && x.cantxUnidad > 0).
+                Include(p => p.Categorias).OrderBy(c => c.idCategoria);
+
+            }
             return View(productos);
         }
         [Authorize(Roles = "Cliente")]
@@ -112,7 +129,6 @@ namespace appProveedores.Controllers
                 };
                 db.Pedido.Add(pedido);
                 db.SaveChanges();
-                pedido = null;
                 return pedido.idPedido;
             }
 
@@ -144,6 +160,12 @@ namespace appProveedores.Controllers
         public async System.Threading.Tasks.Task<ActionResult> Cotizacion()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
+            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
+            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
+            if (productosPedidos.Count() == 0)
+            {
+                return RedirectToAction("Lista", "Productos", new { error = "cotizacion" });
+            }
             var cotizacion = new Cotización()
             {
                 idCliente = idCte,
@@ -153,8 +175,7 @@ namespace appProveedores.Controllers
             await db.SaveChangesAsync();
 
             var _idCotizacion = (from u in db.Cotización where u.idCliente == idCte select u.idCotización).ToList().LastOrDefault();
-            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
-            var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
+           
             foreach (var item in productosPedidos)
             {
                 ProductoCotizacion producto = new ProductoCotizacion()
@@ -169,26 +190,11 @@ namespace appProveedores.Controllers
             }
            
             var productosCotizacion = db.ProductoCotizacion.Where(x => x.idCotizacion == _idCotizacion);
-            ViewBag.SubTotal = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad);
-            ViewBag.IVA = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * .16;
+           
             ViewBag.Total = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
 
 
             return View(db.ProductoPedido.Where(x=>x.idPedido == _idPedido));
-        }
-
-        public void GenerarPDF()
-        {
-            HtmlToPdf converter = new HtmlToPdf();
-
-            // create a new pdf document converting an url
-            PdfDocument doc = converter.ConvertUrl("http://localhost:15392/Productos/Cotizacion");
-
-            // save pdf document
-            doc.Save( "Sample.pdf");
-
-            // close pdf document
-            doc.Close();
         }
       
         public ActionResult buscarCotizacion(int id)

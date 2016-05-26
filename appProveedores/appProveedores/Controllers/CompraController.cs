@@ -19,8 +19,15 @@ namespace appProveedores.Controllers
       
         public ActionResult Index()
         {
-            var _idCliente = db.AspNetUsers.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            var productosPedido = db.ProductoPedido.Where(x => x.Pedido.idCliente == _idCliente && x.Pedido.estadoPedido == 1);                
+
+            var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
+            var _idPedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u.idPedido).FirstOrDefault();
+            var productosPedido = db.ProductoPedido.Where(x => x.idPedido == _idPedido).ToList();
+            ViewBag.Total = productosPedido.Sum(x => x.Productos.precioUnidad * x.cantidad);
+            if (productosPedido.Count == 0)
+            {
+                return RedirectToAction("Lista", "Productos", new { error = "Compra" });
+            }         
             return View(productosPedido);
         }
         [HttpPost]
@@ -84,22 +91,13 @@ namespace appProveedores.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Pay(Pagar pago, string razon, string rfc)
+        public ActionResult Pay(Pagar pago)
         {
             string res = VerificaPago(pago);
             if (res !=string.Empty)
             {
-                Facturas factura = new Facturas()
-                {
-                    RFC = rfc,
-                    razonSocial = razon,
-                    fechaFacturacion =  DateTime.Now.ToString(),
-                    idPago = res.ToString(),
-                    
-                };
-                db.Facturas.Add(factura);
-                db.SaveChanges();
-                return RedirectToAction("Factura", "Compra", new {id =factura.idFactura });
+
+                return RedirectToAction("generaFactura", "Compra", new {idPago = res});
             }
             else
             {
@@ -114,6 +112,50 @@ namespace appProveedores.Controllers
                 }
                 return RedirectToAction("Pay", "Compra", new { error = true});
             }
+        }
+
+        public ActionResult generaFactura(string idPago)
+        {
+            var _idCliente = db.AspNetUsers.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.direccion = _idCliente.direccion;
+            var pago = (from u in db.Pago where u.idPago == idPago select u).FirstOrDefault();
+            if(pago != null)
+            {
+                ViewBag.pago = idPago;
+                return View();
+            }
+
+            return RedirectToAction("Lista", "Productos");
+           
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult generaFactura(Facturas factura, string idPago, string direccion ="")
+        {
+            
+            var _idCliente = db.AspNetUsers.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+            var existeFactura = db.Facturas.Where(x => x.idPago == idPago).FirstOrDefault();
+            if (existeFactura == null)
+            {
+                if (direccion!="")
+                {
+                    _idCliente.direccion = direccion;
+                    db.Entry(_idCliente).State = EntityState.Modified;
+                }
+                
+                Facturas _factura = new Facturas()
+                {
+                    idPago = idPago,
+                    razonSocial = factura.razonSocial,
+                    RFC = factura.RFC,
+                    fechaFacturacion = DateTime.Now.ToString()
+                };
+                db.Facturas.Add(_factura);
+                db.SaveChanges();
+                return RedirectToAction("Factura", "Compra", new { id= _factura.idFactura});
+            }
+
+            return RedirectToAction("Lista", "Productos");
         }
 
         public ActionResult Factura(int id=0)
@@ -164,7 +206,7 @@ namespace appProveedores.Controllers
             var idPedido = db.Pago.Find(idPago).idPedido;
 
             var productos = (from u in db.ProductoPedido where u.idPedido == idPedido select u).ToList();
-
+            ViewBag.TOTAL = productos.Sum(x => x.cantidad * x.Productos.precioUnidad);
             return PartialView(productos);
         }
         #endregion
@@ -178,7 +220,7 @@ namespace appProveedores.Controllers
                 var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
                 var _Pedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u).FirstOrDefault();
              
-                var request = (HttpWebRequest)WebRequest.Create("http://189.170.117.153:8080/api/Transaction");
+                var request = (HttpWebRequest)WebRequest.Create("http://189.170.144.90:8080/api/Transaction");
                 var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _Pedido.idPedido).ToList();
                 Pagar userPaymment = new Pagar()
                 {

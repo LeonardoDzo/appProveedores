@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Factura";
 }
-<input type="button" id="generar" class="btn-success" value="Generar PDF" />
+<input type="button" id="generar" class="btn btn-success" value="Generar PDF" />
 <input hidden type="text" id="id"  value=@ViewBag.ID />
 <div id="PDF">
     <div class="container">
@@ -89,7 +89,7 @@
                     });
                     var fecha = new Date();
                     doc.addImage(img, 'JPEG', 20, 20);
-                    doc.save('Balancede' + $("#StartDate").val() + 'to' + $("#EndDate").val() + '.pdf');
+                    doc.save('Factura'+$("#ID")+'.pdf');
                     form.width(cache_width);
                 });
             }

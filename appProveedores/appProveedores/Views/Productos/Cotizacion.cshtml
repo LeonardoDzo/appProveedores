@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
 
-<input type="button" id="generar" class="btn-success" value="Generar PDF"/>
+<input type="button" id="generar" class="btn btn-success" value="Generar PDF"/>
 <div id="PDF" class="container service-wrapper">
     <br />
     <div class="col-lg-9">
@@ -56,26 +56,8 @@
                     </td>
                 </tr>
             }
-            <tr>
-                <td></td>
-                <td></td>
-                <td>
-                   <h5>Sub-Total</h5>
-                </td>
-                <td>
-                    @ViewBag.SubTotal
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>
-                    <h5>IVA</h5>
-                </td>
-                <td>
-                    @ViewBag.IVA
-                </td>
-            </tr>
+  
+    
             <tr>
                 <td></td>
                 <td></td>
@@ -83,7 +65,7 @@
                     <h5>TOTAL</h5>
                 </td>
                 <td>
-                    @ViewBag.TOTAL
+                  <h5>$ @ViewBag.TOTAL</h5> 
                 </td>
             </tr>
 
@@ -146,7 +128,7 @@
                     });
                     var fecha = new Date();
                     doc.addImage(img, 'JPEG', 20, 20);
-                    doc.save('Balancede' + $("#StartDate").val() + 'to' + $("#EndDate").val() + '.pdf');
+                    doc.save('Cotización'+$("#ID")+'.pdf');
                     form.width(cache_width);
                 });
             }

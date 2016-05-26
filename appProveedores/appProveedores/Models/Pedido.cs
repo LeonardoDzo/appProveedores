@@ -11,7 +11,7 @@ namespace appProveedores.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Pedido
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,15 +24,27 @@ namespace appProveedores.Models
         public int idPedido { get; set; }
         public string idCliente { get; set; }
         public System.DateTime fechaPedido { get; set; }
+        
+        [Display(Name = "Fecha de Entrega")]
         public System.DateTime fechaEntrega { get; set; }
         public System.DateTime fechaEnvio { get; set; }
+      
+        [Display(Name = "Estado del Pedido")]
         public int estadoPedido { get; set; }
+       
+        [Display(Name = "Código Postal")]
         public string codigoPostal { get; set; }
+        [Display(Name = "Calle")]
         public string calle { get; set; }
+        [Display(Name = "Número Interior")]
         public string numeroInterior { get; set; }
+        [Display(Name = "Número Exterior")]
         public string numeroExterior { get; set; }
+        [Display(Name = "Colonia")]
         public string colonia { get; set; }
+        [Display(Name = "Ciudad")]
         public string ciudad { get; set; }
+        [Display(Name = "Estado")]
         public string estado { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }

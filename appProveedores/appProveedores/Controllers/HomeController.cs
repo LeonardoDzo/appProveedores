@@ -11,6 +11,10 @@ namespace appProveedores.Controllers
      
         public ActionResult Index()
         {
+            if (User.IsInRole("Cliente"))
+            {
+                return RedirectToAction("Lista","Productos");
+            }
             return View();
         }
 

@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-responsive table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.nombre)
@@ -53,5 +53,14 @@
         </td>
     </tr>
 }
-
+    <tr>
+        <td>
+            <h2>Total</h2>
+        </td>
+        <td></td>
+        <td></td>
+        <td>
+            <h3>$@ViewBag.Total</h3>
+        </td>
+    </tr>
 </table>
