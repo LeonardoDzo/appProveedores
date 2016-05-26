@@ -45,7 +45,7 @@
         <p>
             @using (Html.BeginForm("Seleccion", "Productos", "POST"))
             {
-                <input type="number" required id="cantidad" name="cantidad" class="form-control" />
+                <input type="number" required id="cantidad" name="cantidad" max="2000" class="form-control" />
                 <input type="submit" value="Agregar al carrito" class="form-control" />
                 <a href="/Productos/Lista" class="form-control">Devolverte</a>
             }
