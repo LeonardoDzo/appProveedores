@@ -1,53 +1,48 @@
 ﻿@model IEnumerable<appProveedores.Models.ProductoPedido>
 
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos.nombre)
+            </th>
+            <th>
+                P. Unitario
+            </th>
+            <th>
+                IMPORTE
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Productos.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
+                </td>
+                <td>
+                   $@(item.Productos.precioUnidad * item.cantidad)
+                </td>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.cantidad)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Productos.nombre)
-        </th>
-        <th>
-            P. Unitario
-        </th>
-        <th>
-            IMPORTE
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.cantidad)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Productos.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Productos.precioUnidad)
-        </td>
-        <td>
-            @(item.Productos.precioUnidad * item.cantidad)
-        </td>
-        
-    </tr>
-}
-    <tr>
-        <td >
-          
-        </td>
-        <td >
-           
-        </td>
-        <td>
-           TOTAL:
-        </td>
-        <td>
-            @ViewBag.TOTAL
-        </td>
-
-    </tr>
-
-</table>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                TOTAL:
+            </td>
+            <td>
+                $@ViewBag.TOTAL
+            </td>
+        </tr>
+    </table>
+</div>

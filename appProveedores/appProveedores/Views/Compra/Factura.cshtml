@@ -6,7 +6,7 @@
 <input hidden type="text" id="id"  value=@ViewBag.ID />
 <div id="PDF">
     <div class="container">
-        <div class="col-lg-12" style="background-color:#0056b2">FACTURA ELECTRONICA (CFDI)</div>
+        <div class="col-lg-12 text-center" style="background-color:#0056b2;color:white; font-size:large;">FACTURA ELECTRONICA (CFDI)</div>
         <h2>PROVEEMAX</h2>
         <br />
         <div class="col-lg-3"><img src="~/fonts/proveedores.png" height="120" width="120" /></div>
@@ -32,7 +32,7 @@
         <div id="DatosFiscales" class="col-lg-12 left">
 
         </div>
-        <div id="productos" class="col-lg-12">
+        <div id="products" class="col-lg-12">
 
         </div>
         <br />
@@ -65,8 +65,8 @@
             $('#DatosFiscales').load("/Compra/_datosFiscales?idFactura=" + $("#id").val());
         }
         function _Productos() {
-            $('#productos').empty();
-            $('#productos').load("/Compra/_ProductosComprados?idFactura=" + $("#id").val());
+            $('#products').empty();
+            $('#products').load("/Compra/_ProductosComprados?idFactura=" + $("#id").val());
         }
         (function () {
             var
