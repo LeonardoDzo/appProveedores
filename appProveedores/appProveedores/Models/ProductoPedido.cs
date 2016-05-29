@@ -20,7 +20,7 @@ namespace appProveedores.Models
         [Display(Name = "Cantidad")]
         public int cantidad { get; set; }
         public Nullable<float> descuento { get; set; }
-    
+
         public virtual Pedido Pedido { get; set; }
         public virtual Productos Productos { get; set; }
     }

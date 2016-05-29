@@ -20,14 +20,14 @@ namespace appProveedores.Models
             this.Productos = new HashSet<Productos>();
         }
 
-        public int idCategoria { get; set; } 
+        public int idCategoria { get; set; }
         [Required]
         [Display(Name = "Nombre")]
         public string nombreCategoria { get; set; }
         [Required]
         [Display(Name = "Descripción")]
         public string descripción { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Productos> Productos { get; set; }
     }

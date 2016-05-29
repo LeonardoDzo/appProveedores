@@ -7,7 +7,7 @@
       <Diagram DiagramId="0977b466485a4802aa71b35007402468" Name="Diagram1">
         <EntityTypeShape EntityType="dbProveedoresModel.AspNetRoles" Width="1.5" PointX="1.5" PointY="13.375" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProveedoresModel.Categorias" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProveedoresModel.Categorias" Width="1.5" PointX="0.625" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.Cotización" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.Facturas" Width="1.5" PointX="7.5" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProveedoresModel.Pago" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />

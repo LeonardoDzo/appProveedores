@@ -20,18 +20,18 @@ namespace appProveedores.Models
             this.Pago = new HashSet<Pago>();
             this.ProductoPedido = new HashSet<ProductoPedido>();
         }
-    
+
         public int idPedido { get; set; }
         public string idCliente { get; set; }
         public System.DateTime fechaPedido { get; set; }
-        
+
         [Display(Name = "Fecha de Entrega")]
         public System.DateTime fechaEntrega { get; set; }
         public System.DateTime fechaEnvio { get; set; }
-      
+
         [Display(Name = "Estado del Pedido")]
         public int estadoPedido { get; set; }
-       
+
         [Display(Name = "Código Postal")]
         public string codigoPostal { get; set; }
         [Display(Name = "Calle")]
@@ -46,6 +46,7 @@ namespace appProveedores.Models
         public string ciudad { get; set; }
         [Display(Name = "Estado")]
         public string estado { get; set; }
+        public Nullable<int> calificacion { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

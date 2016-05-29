@@ -65,7 +65,7 @@
           <Property Name="idPago" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="razonSocial" Type="nvarchar(max)" Nullable="false" />
           <Property Name="RFC" Type="nchar" MaxLength="13" Nullable="false" />
-          <Property Name="fechaFacturacion" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="fechaFacturacion" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Pago">
           <Key>
@@ -93,6 +93,7 @@
           <Property Name="colonia" Type="nvarchar" MaxLength="50" />
           <Property Name="ciudad" Type="nvarchar" MaxLength="50" />
           <Property Name="estado" Type="nvarchar" MaxLength="50" />
+          <Property Name="calificacion" Type="int" />
         </EntityType>
         <EntityType Name="ProductoCotizacion">
           <Key>
@@ -123,6 +124,7 @@
           <Property Name="cantxUnidad" Type="int" Nullable="false" />
           <Property Name="precioUnidad" Type="real" Nullable="false" />
           <Property Name="unidadExistencia" Type="bit" Nullable="false" />
+          <Property Name="filePath" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <Association Name="FK_Cotización_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
@@ -382,7 +384,7 @@
           <Property Name="idPago" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="razonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RFC" Type="String" MaxLength="13" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="fechaFacturacion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="fechaFacturacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Pago" Relationship="Self.FK_Facturas_Pago" FromRole="Facturas" ToRole="Pago" />
         </EntityType>
         <EntityType Name="Pago">
@@ -416,6 +418,7 @@
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Pedido_User" FromRole="Pedido" ToRole="AspNetUsers" />
           <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_Pedido" FromRole="Pedido" ToRole="Pago" />
           <NavigationProperty Name="ProductoPedido" Relationship="Self.FK_ProductoPedido_Pedido" FromRole="Pedido" ToRole="ProductoPedido" />
+          <Property Name="calificacion" Type="Int32" />
         </EntityType>
         <EntityType Name="ProductoCotizacion">
           <Key>
@@ -453,6 +456,7 @@
           <NavigationProperty Name="Categorias" Relationship="Self.FK_Productos_Categorias" FromRole="Productos" ToRole="Categorias" />
           <NavigationProperty Name="ProductoCotizacion" Relationship="Self.FK_ProductoCotizacion_Productos" FromRole="Productos" ToRole="ProductoCotizacion" />
           <NavigationProperty Name="ProductoPedido" Relationship="Self.FK_ProductoPedido_Productos" FromRole="Productos" ToRole="ProductoPedido" />
+          <Property Name="filePath" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Cotización_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
@@ -698,6 +702,7 @@
           <EntitySetMapping Name="Pedido">
             <EntityTypeMapping TypeName="dbProveedoresModel.Pedido">
               <MappingFragment StoreEntitySet="Pedido">
+                <ScalarProperty Name="calificacion" ColumnName="calificacion" />
                 <ScalarProperty Name="idPedido" ColumnName="idPedido" />
                 <ScalarProperty Name="idCliente" ColumnName="idCliente" />
                 <ScalarProperty Name="fechaPedido" ColumnName="fechaPedido" />
@@ -738,6 +743,7 @@
           <EntitySetMapping Name="Productos">
             <EntityTypeMapping TypeName="dbProveedoresModel.Productos">
               <MappingFragment StoreEntitySet="Productos">
+                <ScalarProperty Name="filePath" ColumnName="filePath" />
                 <ScalarProperty Name="idProducto" ColumnName="idProducto" />
                 <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />

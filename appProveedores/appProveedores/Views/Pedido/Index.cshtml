@@ -4,7 +4,7 @@
     ViewBag.Title = "Pedidos";
 }
 
-<h2>Index</h2>
+<h2>Lista de Pedidos</h2>
 
 <table class="table">
     <tr>
@@ -18,8 +18,9 @@
         </th>
         <th>Dias restantes</th>
         <td>Estado</td>
+        
+        <th>Confirmar/Calificación</th>
         <th></th>
-        <th>Confirmar pedido</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -65,12 +66,16 @@
                 using (Html.BeginForm("ConfirmarPedido", "Pedido", FormMethod.Post))
                 {
                     <input hidden value=@item.idPedido name="idPed" />
-                    <input type="submit" class="btn btn-info" value="Confirmar" />
+                    <input type="range" name="calificacion" value="4" step="1.0" id=@item.idPedido  >
+                    <div  class="rateit"  data-rateit-backingfld=#@item.idPedido data-rateit-resetable="false" data-rateit-ispreset="true"
+                         data-rateit-min="0" data-rateit-max="5">
+                    </div>
+                    <input type="submit" id="confirmar" class="btn btn-info" value="Confirmar" />
                 }
             }
             else
             {
-                
+                <div class="rateit" data-rateit-value=@item.calificacion data-rateit-ispreset="true" data-rateit-readonly="true"></div>
             }
            
             
@@ -83,3 +88,13 @@
 }
 
 </table>
+
+@section Scripts {
+    
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery.rateit.js")
+  
+    <script type="text/javascript">
+
+    </script>
+}

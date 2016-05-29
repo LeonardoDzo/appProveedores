@@ -7,6 +7,8 @@ using System.Net;
 using System.Web.Mvc;
 using appProveedores.Models;
 using SelectPdf;
+using System.Web;
+using System.IO;
 
 namespace appProveedores.Controllers
 { 
@@ -231,8 +233,9 @@ namespace appProveedores.Controllers
         }
         [Authorize(Roles = "Administrador")]
         // GET: Productos/Create
-        public ActionResult Create()
+        public ActionResult Create(string estado="")
         {
+            ViewBag.error = estado;
             ViewBag.idCategoria = new SelectList(db.Categorias, "idCategoria", "nombreCategoria");
             return View();
         }
@@ -242,10 +245,28 @@ namespace appProveedores.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idProducto,idCategoria,nombre,cantxUnidad,precioUnidad,unidadExistencia")] Productos productos)
+        public ActionResult Create([Bind(Include = "idProducto,idCategoria,nombre,cantxUnidad,precioUnidad,unidadExistencia")] Productos productos, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+
+                if (file != null && file.ContentLength > 0)
+                    try
+                    {
+                        string path = Path.Combine(Server.MapPath("~/fonts"),
+                                                   Path.GetFileName(file.FileName));
+                        file.SaveAs(path);
+                        productos.filePath = "/fonts/"+file.FileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        RedirectToAction("Create", new { estado = "error" });
+                    }
+                else
+                {
+                    RedirectToAction("Create", new { estado = "error" });
+                }
+
                 db.Productos.Add(productos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -276,13 +297,29 @@ namespace appProveedores.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "idProducto,idCategoria,nombre,cantxUnidad,precioUnidad,unidadExistencia")] Productos productos)
+        public ActionResult Edit([Bind(Include = "idProducto,idCategoria,nombre,cantxUnidad,precioUnidad,unidadExistencia")] Productos productos, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null && file.ContentLength > 0)
+                {
+                    try
+                    {
+                        string path = Path.Combine(Server.MapPath("~/fonts"),
+                                                   Path.GetFileName(file.FileName));
+                        file.SaveAs(path);
+                        productos.filePath = "/fonts/" + file.FileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        RedirectToAction("Create", new { estado = "error" });
+                    }
+                   
+                }
                 db.Entry(productos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
+
             }
             ViewBag.idCategoria = new SelectList(db.Categorias, "idCategoria", "nombreCategoria", productos.idCategoria);
             return View(productos);

@@ -19,10 +19,12 @@ namespace appProveedores.Controllers
             return View(pedidos);
         }
         [HttpPost]
-        public ActionResult ConfirmarPedido(int idPed)
+        public ActionResult ConfirmarPedido(int idPed, int calificacion=1)
         {
             var _Pedido = db.Pedido.Find(idPed);
             _Pedido.estadoPedido = 3;
+            _Pedido.fechaEntrega = DateTime.Now;
+            _Pedido.calificacion = calificacion;
             db.Entry(_Pedido).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -20,7 +20,7 @@ namespace appProveedores.Models
             this.ProductoCotizacion = new HashSet<ProductoCotizacion>();
             this.ProductoPedido = new HashSet<ProductoPedido>();
         }
-    
+
         public int idProducto { get; set; }
         public int idCategoria { get; set; }
         [Required]
@@ -36,6 +36,8 @@ namespace appProveedores.Models
         [Required]
         [Display(Name = "Existencia")]
         public bool unidadExistencia { get; set; }
+        [DataType(DataType.ImageUrl)]
+        public string filePath { get; set; }
     
         public virtual Categorias Categorias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

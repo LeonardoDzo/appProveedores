@@ -53,6 +53,9 @@
             </div>
         </div>
     </div>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" data-transitiongoal="100"></div>
+    </div>
 }
 
 <div>
@@ -67,6 +70,11 @@
             if ($("#error").val() == "si") {
                 swal("OPSSS!", "No se pudo completar la transacción", "error");
             }
+            $("#Enviar").click(function () {
+
+                $('.progress .progress-bar').progressbar();
+            });
+            
         });
         
                  
