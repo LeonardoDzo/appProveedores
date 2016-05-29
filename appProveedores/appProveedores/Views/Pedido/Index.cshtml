@@ -18,8 +18,8 @@
         </th>
         <th>Dias restantes</th>
         <td>Estado</td>
-        
         <th></th>
+        <th>Confirmar pedido</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -60,6 +60,23 @@
             }
         </td>
         <td>
+            @if (item.estadoPedido == 2)
+            {
+                using (Html.BeginForm("ConfirmarPedido", "Pedido", FormMethod.Post))
+                {
+                    <input hidden value=@item.idPedido name="idPed" />
+                    <input type="submit" class="btn btn-info" value="Confirmar" />
+                }
+            }
+            else
+            {
+                
+            }
+           
+            
+        </td>
+        <td>
+
             @Html.ActionLink("Detalles", "Detalles", new { id = item.idPedido })
         </td>
     </tr>

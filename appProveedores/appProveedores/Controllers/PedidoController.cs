@@ -6,6 +6,7 @@ using System.Data.Entity;
 
 namespace appProveedores.Controllers
 {
+    [Authorize(Roles ="Cliente")]
     public class PedidoController : Controller
     {
         dbProveedoresEntities db = new dbProveedoresEntities();
@@ -17,6 +18,17 @@ namespace appProveedores.Controllers
             var pedidos = db.Pedido.Where(x => x.idCliente == idCte && x.estadoPedido >1).OrderByDescending(x=> x.fechaEntrega).Include(p=>p.Pago).ToList();
             return View(pedidos);
         }
+        [HttpPost]
+        public ActionResult ConfirmarPedido(int idPed)
+        {
+            var _Pedido = db.Pedido.Find(idPed);
+            _Pedido.estadoPedido = 3;
+            db.Entry(_Pedido).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
+
 
         private void actualizaPedidos()
         {

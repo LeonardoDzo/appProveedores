@@ -93,6 +93,7 @@ namespace appProveedores.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Pay(Pagar pago)
         {
+         
             string res = VerificaPago(pago);
             if (res !=string.Empty)
             {
@@ -220,11 +221,12 @@ namespace appProveedores.Controllers
                 var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
                 var _Pedido = (from u in db.Pedido where u.idCliente == idCte && u.estadoPedido == 1 select u).FirstOrDefault();
              
-                var request = (HttpWebRequest)WebRequest.Create("http://189.170.144.90:8080/api/Transaction");
+                var request = (HttpWebRequest)WebRequest.Create("http://192.168.1.156:8080/api/Transaction");
                 var productosPedidos = db.ProductoPedido.Where(x => x.idPedido == _Pedido.idPedido).ToList();
+                var total = productosPedidos.Sum(x => x.Productos.precioUnidad * x.cantidad);
                 Pagar userPaymment = new Pagar()
                 {
-                    Amount = pago.Amount,
+                    Amount = total,
                     CardNumber = pago.CardNumber,
                     ExpirationDate = pago.ExpirationDate,
                     SecurityCode = pago.SecurityCode
