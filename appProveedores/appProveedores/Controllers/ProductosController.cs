@@ -37,13 +37,19 @@ namespace appProveedores.Controllers
                 productos = productos.Where(x => x.nombre == _productos).Include(p=> p.Categorias).OrderBy(c=>c.idCategoria);
             }
 
-            if(productos.Count() == 0)
+            if (productos.Count() == 0)
+            {
+              
+                productos = db.Productos.Where(x=> x.Categorias.nombreCategoria == _productos).Include(p => p.Categorias).OrderBy(c => c.nombre);
+            }
+
+            if (productos.Count() == 0)
             {
                 ViewBag.error = "noseencontro";
                 productos = db.Productos.Where(x => x.unidadExistencia == true && x.cantxUnidad > 0).
                 Include(p => p.Categorias).OrderBy(c => c.idCategoria);
-
             }
+
             return View(productos);
         }
         [Authorize(Roles = "Cliente")]

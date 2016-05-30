@@ -33,10 +33,18 @@ namespace appProveedores.Controllers
         [HttpPost]
         public ActionResult Quitar(int? id)
         {
-            var producto = db.ProductoPedido.Find(id);
-            db.ProductoPedido.Remove(producto);
-            db.SaveChanges();
-            return RedirectToAction("Revisa");
+            if (id != null)
+            {
+                var producto = db.ProductoPedido.Find(id);
+                if(producto!= null)
+                {
+                    db.ProductoPedido.Remove(producto);
+                    db.SaveChanges();
+                }
+               
+
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult direccion()
