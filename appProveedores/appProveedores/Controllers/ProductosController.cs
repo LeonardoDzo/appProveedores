@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using appProveedores.Models;
-using SelectPdf;
 using System.Web;
 using System.IO;
 
@@ -198,9 +197,10 @@ namespace appProveedores.Controllers
             }
            
             var productosCotizacion = db.ProductoCotizacion.Where(x => x.idCotizacion == _idCotizacion);
-           
-            ViewBag.Total = productosCotizacion.Sum(x => x.Productos.precioUnidad * x.cantidad) * 1.16;
-
+            ViewBag.Cotizacion = _idCotizacion;
+            ViewBag.SUBTOTAL = productosCotizacion.Sum(x => x.cantidad * x.Productos.precioUnidad) * .84;
+            ViewBag.IVA = productosCotizacion.Sum(x => x.cantidad * x.Productos.precioUnidad) * .16;
+            ViewBag.TOTAL = productosCotizacion.Sum(x => x.cantidad * x.Productos.precioUnidad);
 
             return View(db.ProductoPedido.Where(x=>x.idPedido == _idPedido));
         }

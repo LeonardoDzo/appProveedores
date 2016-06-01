@@ -31,7 +31,6 @@ namespace appProveedores.Controllers
 
         }
 
-
         private void actualizaPedidos()
         {
             var idCte = (from c in db.AspNetUsers where c.UserName == User.Identity.Name select c.Id).First();
@@ -51,6 +50,7 @@ namespace appProveedores.Controllers
             if(id != null)
             {
                 var pedido = db.ProductoPedido.Where(x=>x.idPedido== id).ToList();
+                ViewBag.Total = pedido.Sum(x => x.Productos.cantxUnidad * x.cantidad);
                 return View(pedido);
             }else
             {

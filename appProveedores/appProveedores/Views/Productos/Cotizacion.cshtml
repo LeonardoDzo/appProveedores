@@ -4,7 +4,7 @@
 <div id="PDF" class="container service-wrapper">
     <br />
     <div class="col-lg-9">
-
+        <strong># Cotización: @ViewBag.Cotizacion</strong> <br />
         Hermosillo<br />
         30308927834<br />
         Telefono: 2-57-57<br />
@@ -62,10 +62,40 @@
                 <td></td>
                 <td></td>
                 <td>
-                    <h5>TOTAL</h5>
+                    SUBTOTAL:
                 </td>
                 <td>
-                  <h5>$ @ViewBag.TOTAL</h5> 
+                    $@ViewBag.SUBTOTAL
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    DESCUENTO:
+                </td>
+                <td>
+                    $0
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    IVA:
+                </td>
+                <td>
+                    $@ViewBag.IVA
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    TOTAL:
+                </td>
+                <td>
+                    $@ViewBag.TOTAL
                 </td>
             </tr>
 
