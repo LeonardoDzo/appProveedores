@@ -23,7 +23,6 @@ namespace appProveedores.Models
         [Display(Name = "RFC: ")]
         public string RFC { get; set; }
         public string fechaFacturacion { get; set; }
-    
         public virtual Pago Pago { get; set; }
     }
 }

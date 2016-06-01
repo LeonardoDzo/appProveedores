@@ -49,8 +49,8 @@ namespace appProveedores.Controllers
         {
             if(id != null)
             {
-                var pedido = db.ProductoPedido.Where(x=>x.idPedido== id).ToList();
-                ViewBag.Total = pedido.Sum(x => x.Productos.cantxUnidad * x.cantidad);
+                var pedido = db.ProductoPedido.Where(x=>x.idPedido == id).ToList();
+                ViewBag.Total = pedido.Sum(x => x.Productos.precioUnidad * x.cantidad);
                 return View(pedido);
             }else
             {
